@@ -59,164 +59,165 @@ function Main() {
     checkLogin();
   }, []);
   const checkLogin = async () => {
-    if (!localStorage.getItem("token")) {
+    if (!localStorage.getItem("token") || !localStorage.getItem("nhanVien")) {
       navigate("/login");
     } else {
       setNhanVien(JSON.parse(localStorage.getItem("nhanVien")));
     }
   };
   console.log(subNavSelected);
-  return (
-    <Container>
-      <Menu
-        navSelected={navSelected}
-        setNavSelected={setNavSelected}
-        subNavSelected={subNavSelected}
-        setSubNavSelected={setSubNavSelected}
-      ></Menu>
-      <div className="big-container">
-        {/* <TitleBar /> */}
-        <div className="wrapper">
-          {nhanVien &&
-            nhanVien.taiKhoan &&
-            nhanVien.taiKhoan.daKichHoat &&
-            subNavSelected.subnav === "book" && <FrmDatPhong />}
-          {nhanVien &&
-            nhanVien.taiKhoan &&
-            nhanVien.taiKhoan.daKichHoat &&
-            subNavSelected.subnav === "update-room" && <FrmQuanLyPhong />}
-          {nhanVien &&
-            nhanVien.taiKhoan &&
-            nhanVien.taiKhoan.daKichHoat &&
-            subNavSelected.subnav === "search-room" && <FrmTimKiemPhong />}
-          {nhanVien &&
-            nhanVien.taiKhoan &&
-            nhanVien.taiKhoan.daKichHoat &&
-            subNavSelected.subnav === "check-in" && <FrmNhanPhong />}
-          {nhanVien &&
-            nhanVien.taiKhoan &&
-            nhanVien.taiKhoan.daKichHoat &&
-            subNavSelected.subnav === "add-bill" && <FrmLapHoaDon />}
-          {nhanVien &&
-            nhanVien.taiKhoan &&
-            nhanVien.taiKhoan.daKichHoat &&
-            subNavSelected.subnav === "update-floor" && <FrmTang />}
-          {nhanVien &&
-            nhanVien.taiKhoan &&
-            nhanVien.taiKhoan.daKichHoat &&
-            subNavSelected.subnav === "search-floor" && <FrmTimKiemTang />}
-          {nhanVien &&
-            nhanVien.taiKhoan &&
-            nhanVien.taiKhoan.daKichHoat &&
-            subNavSelected.subnav === "search-room-type" && (
-              <FrmTimKiemLoaiPhong />
-            )}
-          {nhanVien &&
-            nhanVien.taiKhoan &&
-            nhanVien.taiKhoan.daKichHoat &&
-            subNavSelected.subnav === "update-service" && <FrmDichVu />}
-          {nhanVien &&
-            nhanVien.taiKhoan &&
-            nhanVien.taiKhoan.daKichHoat &&
-            subNavSelected.subnav === "booking-service" && <FrmDatDichVu />}
-          {nhanVien &&
-            nhanVien.taiKhoan &&
-            nhanVien.taiKhoan.daKichHoat &&
-            subNavSelected.subnav === "update-guest" && <FrmKhachHang />}
-          {nhanVien &&
-            nhanVien.taiKhoan &&
-            nhanVien.taiKhoan.daKichHoat &&
-            nhanVien.taiKhoan.vaiTro.tenVaiTro === "ROLE_MANAGEMENT" &&
-            subNavSelected.subnav === "update-staff" && <FrmNhanVien />}
-          {nhanVien &&
-            nhanVien.taiKhoan &&
-            nhanVien.taiKhoan.daKichHoat &&
-            subNavSelected.subnav === "search-service" && <FrmTimKiemDichVu />}
-          {nhanVien &&
-            nhanVien.taiKhoan &&
-            nhanVien.taiKhoan.daKichHoat &&
-            subNavSelected.subnav === "search-guest" && <FrmTimKiemKhachHang />}
-          {nhanVien &&
-            nhanVien.taiKhoan &&
-            nhanVien.taiKhoan.daKichHoat &&
-            subNavSelected.subnav === "search-staff" && <FrmTimKiemNhanVien />}
-          {nhanVien &&
-            nhanVien.taiKhoan &&
-            nhanVien.taiKhoan.daKichHoat &&
-            subNavSelected.subnav === "room-report" && <FrmThongKePhong />}
-          {nhanVien &&
-            nhanVien.taiKhoan &&
-            nhanVien.taiKhoan.daKichHoat &&
-            subNavSelected.subnav === "service-report" && <FrmThongKeDichVu />}
-          {nhanVien &&
-            nhanVien.taiKhoan &&
-            nhanVien.taiKhoan.daKichHoat &&
-            subNavSelected.subnav === "doanhthu-report" && (
-              <FrmThongKeDoanhThu />
-            )}
-          {nhanVien &&
-            nhanVien.taiKhoan &&
-            nhanVien.taiKhoan.daKichHoat &&
-            subNavSelected.subnav === "report-staff" && <TabThongKe />}
-          {nhanVien &&
-            nhanVien.taiKhoan &&
-            nhanVien.taiKhoan.daKichHoat &&
-            nhanVien.taiKhoan.vaiTro.tenVaiTro === "ROLE_MANAGEMENT" &&
-            subNavSelected.subnav === "update-shift" && <FrmCapNhatCa />}
-          {nhanVien &&
-            nhanVien.taiKhoan &&
-            nhanVien.taiKhoan.daKichHoat &&
-            nhanVien.taiKhoan.vaiTro.tenVaiTro === "ROLE_MANAGEMENT" &&
-            subNavSelected.subnav === "assign" && <FrmPhanCong />}
-          {nhanVien &&
-            nhanVien.taiKhoan &&
-            nhanVien.taiKhoan.daKichHoat &&
-            nhanVien.taiKhoan.vaiTro.tenVaiTro === "ROLE_MANAGEMENT" &&
-            subNavSelected.subnav === "timekeeping" && <FrmChamCong />}
-          {nhanVien &&
-            nhanVien.taiKhoan &&
-            nhanVien.taiKhoan.daKichHoat &&
-            nhanVien.taiKhoan.vaiTro.tenVaiTro === "ROLE_MANAGEMENT" &&
-            subNavSelected.subnav === "payrolls" && <FrmTinhLuong />}
-          {nhanVien &&
-            nhanVien.taiKhoan &&
-            nhanVien.taiKhoan.daKichHoat &&
-            subNavSelected.subnav === "search-bill" && <FrmTimKiemHoaDon />}
-          {nhanVien && nhanVien.taiKhoan && !nhanVien.taiKhoan.daKichHoat && (
-            <div className="non-access">
-              <Result
-                status="403"
-                title="Tài khoản của bạn đã bị khóa"
-                subTitle="Vui lòng liên hệ nhân viên quản lý để mở khóa"
-                extra={[]}
-              />
-            </div>
-          )}
-          {nhanVien &&
-            nhanVien.taiKhoan &&
-            nhanVien.taiKhoan.daKichHoat &&
-            (!subNavSelected.subnav || subNavSelected.subnav === "") && (
+  if (nhanVien && nhanVien.taiKhoan)
+    return (
+      <Container>
+        <Menu
+          navSelected={navSelected}
+          setNavSelected={setNavSelected}
+          subNavSelected={subNavSelected}
+          setSubNavSelected={setSubNavSelected}
+        ></Menu>
+        <div className="big-container">
+          {/* <TitleBar /> */}
+          <div className="wrapper">
+            {nhanVien &&
+              nhanVien.taiKhoan &&
+              nhanVien.taiKhoan.daKichHoat &&
+              subNavSelected.subnav === "book" && <FrmDatPhong />}
+            {nhanVien &&
+              nhanVien.taiKhoan &&
+              nhanVien.taiKhoan.daKichHoat &&
+              subNavSelected.subnav === "update-room" && <FrmQuanLyPhong />}
+            {nhanVien &&
+              nhanVien.taiKhoan &&
+              nhanVien.taiKhoan.daKichHoat &&
+              subNavSelected.subnav === "search-room" && <FrmTimKiemPhong />}
+            {nhanVien &&
+              nhanVien.taiKhoan &&
+              nhanVien.taiKhoan.daKichHoat &&
+              subNavSelected.subnav === "check-in" && <FrmNhanPhong />}
+            {nhanVien &&
+              nhanVien.taiKhoan &&
+              nhanVien.taiKhoan.daKichHoat &&
+              subNavSelected.subnav === "add-bill" && <FrmLapHoaDon />}
+            {nhanVien &&
+              nhanVien.taiKhoan &&
+              nhanVien.taiKhoan.daKichHoat &&
+              subNavSelected.subnav === "update-floor" && <FrmTang />}
+            {nhanVien &&
+              nhanVien.taiKhoan &&
+              nhanVien.taiKhoan.daKichHoat &&
+              subNavSelected.subnav === "search-floor" && <FrmTimKiemTang />}
+            {nhanVien &&
+              nhanVien.taiKhoan &&
+              nhanVien.taiKhoan.daKichHoat &&
+              subNavSelected.subnav === "search-room-type" && (
+                <FrmTimKiemLoaiPhong />
+              )}
+            {nhanVien &&
+              nhanVien.taiKhoan &&
+              nhanVien.taiKhoan.daKichHoat &&
+              subNavSelected.subnav === "update-service" && <FrmDichVu />}
+            {nhanVien &&
+              nhanVien.taiKhoan &&
+              nhanVien.taiKhoan.daKichHoat &&
+              subNavSelected.subnav === "booking-service" && <FrmDatDichVu />}
+            {nhanVien &&
+              nhanVien.taiKhoan &&
+              nhanVien.taiKhoan.daKichHoat &&
+              subNavSelected.subnav === "update-guest" && <FrmKhachHang />}
+            {nhanVien &&
+              nhanVien.taiKhoan &&
+              nhanVien.taiKhoan.daKichHoat &&
+              nhanVien.taiKhoan.vaiTro.tenVaiTro === "ROLE_MANAGEMENT" &&
+              subNavSelected.subnav === "update-staff" && <FrmNhanVien />}
+            {nhanVien &&
+              nhanVien.taiKhoan &&
+              nhanVien.taiKhoan.daKichHoat &&
+              subNavSelected.subnav === "search-service" && <FrmTimKiemDichVu />}
+            {nhanVien &&
+              nhanVien.taiKhoan &&
+              nhanVien.taiKhoan.daKichHoat &&
+              subNavSelected.subnav === "search-guest" && <FrmTimKiemKhachHang />}
+            {nhanVien &&
+              nhanVien.taiKhoan &&
+              nhanVien.taiKhoan.daKichHoat &&
+              subNavSelected.subnav === "search-staff" && <FrmTimKiemNhanVien />}
+            {nhanVien &&
+              nhanVien.taiKhoan &&
+              nhanVien.taiKhoan.daKichHoat &&
+              subNavSelected.subnav === "room-report" && <FrmThongKePhong />}
+            {nhanVien &&
+              nhanVien.taiKhoan &&
+              nhanVien.taiKhoan.daKichHoat &&
+              subNavSelected.subnav === "service-report" && <FrmThongKeDichVu />}
+            {nhanVien &&
+              nhanVien.taiKhoan &&
+              nhanVien.taiKhoan.daKichHoat &&
+              subNavSelected.subnav === "doanhthu-report" && (
+                <FrmThongKeDoanhThu />
+              )}
+            {nhanVien &&
+              nhanVien.taiKhoan &&
+              nhanVien.taiKhoan.daKichHoat &&
+              subNavSelected.subnav === "report-staff" && <TabThongKe />}
+            {nhanVien &&
+              nhanVien.taiKhoan &&
+              nhanVien.taiKhoan.daKichHoat &&
+              nhanVien.taiKhoan.vaiTro.tenVaiTro === "ROLE_MANAGEMENT" &&
+              subNavSelected.subnav === "update-shift" && <FrmCapNhatCa />}
+            {nhanVien &&
+              nhanVien.taiKhoan &&
+              nhanVien.taiKhoan.daKichHoat &&
+              nhanVien.taiKhoan.vaiTro.tenVaiTro === "ROLE_MANAGEMENT" &&
+              subNavSelected.subnav === "assign" && <FrmPhanCong />}
+            {nhanVien &&
+              nhanVien.taiKhoan &&
+              nhanVien.taiKhoan.daKichHoat &&
+              nhanVien.taiKhoan.vaiTro.tenVaiTro === "ROLE_MANAGEMENT" &&
+              subNavSelected.subnav === "timekeeping" && <FrmChamCong />}
+            {nhanVien &&
+              nhanVien.taiKhoan &&
+              nhanVien.taiKhoan.daKichHoat &&
+              nhanVien.taiKhoan.vaiTro.tenVaiTro === "ROLE_MANAGEMENT" &&
+              subNavSelected.subnav === "payrolls" && <FrmTinhLuong />}
+            {nhanVien &&
+              nhanVien.taiKhoan &&
+              nhanVien.taiKhoan.daKichHoat &&
+              subNavSelected.subnav === "search-bill" && <FrmTimKiemHoaDon />}
+            {nhanVien && nhanVien.taiKhoan && !nhanVien.taiKhoan.daKichHoat && (
               <div className="non-access">
                 <Result
-                  icon={<HomePage />}
-                  title={`Xin chào ${nhanVien.hoTen}`}
-                  subTitle="Chào mừng bạn đã quay trở lại với ứng dụng quản lý khách sạn Sama"
+                  status="403"
+                  title="Tài khoản của bạn đã bị khóa"
+                  subTitle="Vui lòng liên hệ nhân viên quản lý để mở khóa"
                   extra={[]}
                 />
               </div>
             )}
-          {nhanVien &&
-            nhanVien.taiKhoan &&
-            nhanVien.taiKhoan.daKichHoat &&
-            subNavSelected.subnav === "watch-assignment" && <FrmXemLich />}
-          {nhanVien &&
-            nhanVien.taiKhoan &&
-            nhanVien.taiKhoan.daKichHoat &&
-            subNavSelected.subnav === "watch-payrolls" && <FrmXemBangLuong />}
+            {nhanVien &&
+              nhanVien.taiKhoan &&
+              nhanVien.taiKhoan.daKichHoat &&
+              (!subNavSelected.subnav || subNavSelected.subnav === "") && (
+                <div className="non-access">
+                  <Result
+                    icon={<HomePage />}
+                    title={`Xin chào ${nhanVien.hoTen}`}
+                    subTitle="Chào mừng bạn đã quay trở lại với ứng dụng quản lý khách sạn Sama"
+                    extra={[]}
+                  />
+                </div>
+              )}
+            {nhanVien &&
+              nhanVien.taiKhoan &&
+              nhanVien.taiKhoan.daKichHoat &&
+              subNavSelected.subnav === "watch-assignment" && <FrmXemLich />}
+            {nhanVien &&
+              nhanVien.taiKhoan &&
+              nhanVien.taiKhoan.daKichHoat &&
+              subNavSelected.subnav === "watch-payrolls" && <FrmXemBangLuong />}
+          </div>
         </div>
-      </div>
-    </Container>
-  );
+      </Container>
+    );
 }
 
 const Container = styled.div`
