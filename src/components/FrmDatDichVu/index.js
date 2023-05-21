@@ -28,6 +28,7 @@ function FrmDatDichVu() {
   const [hoaDonSelected, setHoaDonSelected] = useState({});
   const [searchInput, setSearchInput] = useState("");
   const [hoaDonPrice, setHoaDonPrice] = useState(0);
+  const [phongDicHVuPrice, setPhongDicHVuPrice] = useState(0);
   const [selectPrice, setSelectPrice] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
   const [phongSelected, setPhongSelected] = useState("");
@@ -47,6 +48,34 @@ function FrmDatDichVu() {
       }
     setHoaDonPrice(price);
   }, [hoaDonSelected]);
+  useEffect(() => {
+    countPhongPrice();
+  }, [phongSelected]);
+  const countPhongPrice = (data) => {
+    let pricePhong = 0;
+    if (data && data.dsChiTietDichVuDto && data.dsChiTietDichVuDto.length > 0) {
+      for (let i = 0; i < data.dsChiTietDichVuDto.length; i++) {
+        if (data.dsChiTietDichVuDto[i].maPhong === phongSelected) {
+          pricePhong +=
+            data.dsChiTietDichVuDto[i].giaDichVu *
+            data.dsChiTietDichVuDto[i].soLuong;
+        }
+      }
+      setPhongDicHVuPrice(pricePhong);
+    } else if (
+      hoaDonSelected &&
+      hoaDonSelected.dsChiTietDichVuDto &&
+      hoaDonSelected.dsChiTietDichVuDto.length > 0
+    )
+      for (let i = 0; i < hoaDonSelected.dsChiTietDichVuDto.length; i++) {
+        if (hoaDonSelected.dsChiTietDichVuDto[i].maPhong === phongSelected) {
+          pricePhong +=
+            hoaDonSelected.dsChiTietDichVuDto[i].giaDichVu *
+            hoaDonSelected.dsChiTietDichVuDto[i].soLuong;
+        }
+      }
+    setPhongDicHVuPrice(pricePhong);
+  };
   useEffect(() => {
     let price = 0;
     if (dichVuNew && dichVuNew.length > 0)
@@ -171,8 +200,9 @@ function FrmDatDichVu() {
       }
     );
     if (data && data.maHoaDon) {
-      console.log(data);
+      // console.log(data);
       setHoaDonSelected(data);
+      countPhongPrice(data);
       setDichVuNew([]);
       loadHoaDon();
       setToast({
@@ -286,8 +316,6 @@ function FrmDatDichVu() {
                           hoaDonSelected.dsChiTietDichVuDto.map(
                             (dichVu, index) => {
                               // console.log(isSelected(room));
-                              console.log(dichVu.maPhong + " " + phongSelected);
-                              console.log(dichVu.maPhong === phongSelected);
                               if (dichVu.maPhong === phongSelected)
                                 return (
                                   <tr key={index}>
@@ -350,7 +378,16 @@ function FrmDatDichVu() {
                   </div>
 
                   <div className="price-container">
-                    <p>Tổng tiền dịch vụ</p>
+                    <p>
+                      Tổng tiền dịch vụ{" "}
+                      {phongSelected ? "Phòng " + phongSelected : ""}
+                    </p>
+                    <div className="total-price">
+                      {(selectPrice + phongDicHVuPrice).toLocaleString()} VND
+                    </div>
+                  </div>
+                  <div className="price-container">
+                    <p>Tổng tiền dịch vụ hóa đơn</p>
                     <div className="total-price">
                       {(selectPrice + hoaDonPrice).toLocaleString()} VND
                     </div>

@@ -624,11 +624,8 @@ function FrmThongKeDoanhThu() {
             let giaPhong = phong.giaPhong;
             let ngayNhan = new Date(hoadon.ngayNhanPhong)
             let ngayTra = new Date(hoadon.ngayTraPhong);
-            // console.log('Giá phòng tháng 5:', giaPhong);
-            // console.log('Ngày nhận tháng 5:', ngayNhan);
-            // console.log('Ngày trả tháng 5:', ngayTra);
             let totalHour = diff_hours(ngayNhan, ngayTra)
-            // console.log('Tổng hour thang 5:', totalHour);
+
             let tongTien = giaPhong * totalHour;
 
             prices = Number(prices) + Number(tongTien)
@@ -1106,7 +1103,7 @@ function FrmThongKeDoanhThu() {
             let stringDate = moment(hoadon.ngayLap).format("DD/MM/YYYY");
             let [day, month, year] = stringDate.split("/");
             // console.log("month:", month);
-            console.log('Hóa đơn:', hoadon);
+
             if (month === "04") {
                 console.log("Chạy tháng 4");
                 tinhTongTienPhongThang4(hoadon)

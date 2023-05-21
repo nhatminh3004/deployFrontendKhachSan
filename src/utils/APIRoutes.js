@@ -25,6 +25,7 @@ export const bookingServices = `${host}/api/hoaDon/datDichVu`;
 export const getAllBillsRoute = `${host}/api/hoaDon`;
 export const getAllRoomBillsRoute = `${host}/api/hoaDon/layHetHoaDonPhong`;
 export const getSearchBillsRoute = `${host}/api/hoaDon/searchHoaDon`;
+export const getSearchRoomBillsRoute = `${host}/api/hoaDon/searchHoaDonPhong`;
 export const searchBillsByPhongRoute = `${host}/api/hoaDon/searchHoaDonByPhong`;
 
 //Floor

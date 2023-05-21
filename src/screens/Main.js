@@ -65,7 +65,7 @@ function Main() {
       setNhanVien(JSON.parse(localStorage.getItem("nhanVien")));
     }
   };
-  console.log(subNavSelected);
+  // console.log(subNavSelected);
   if (nhanVien && nhanVien.taiKhoan)
     return (
       <Container>
@@ -132,15 +132,21 @@ function Main() {
             {nhanVien &&
               nhanVien.taiKhoan &&
               nhanVien.taiKhoan.daKichHoat &&
-              subNavSelected.subnav === "search-service" && <FrmTimKiemDichVu />}
+              subNavSelected.subnav === "search-service" && (
+                <FrmTimKiemDichVu />
+              )}
             {nhanVien &&
               nhanVien.taiKhoan &&
               nhanVien.taiKhoan.daKichHoat &&
-              subNavSelected.subnav === "search-guest" && <FrmTimKiemKhachHang />}
+              subNavSelected.subnav === "search-guest" && (
+                <FrmTimKiemKhachHang />
+              )}
             {nhanVien &&
               nhanVien.taiKhoan &&
               nhanVien.taiKhoan.daKichHoat &&
-              subNavSelected.subnav === "search-staff" && <FrmTimKiemNhanVien />}
+              subNavSelected.subnav === "search-staff" && (
+                <FrmTimKiemNhanVien />
+              )}
             {nhanVien &&
               nhanVien.taiKhoan &&
               nhanVien.taiKhoan.daKichHoat &&
@@ -148,7 +154,9 @@ function Main() {
             {nhanVien &&
               nhanVien.taiKhoan &&
               nhanVien.taiKhoan.daKichHoat &&
-              subNavSelected.subnav === "service-report" && <FrmThongKeDichVu />}
+              subNavSelected.subnav === "service-report" && (
+                <FrmThongKeDichVu />
+              )}
             {nhanVien &&
               nhanVien.taiKhoan &&
               nhanVien.taiKhoan.daKichHoat &&

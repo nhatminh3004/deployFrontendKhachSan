@@ -29,6 +29,7 @@ function FrmLapHoaDon() {
   const [showConfirmBill_MOMO, setShowConfirmBill_MOMO] = useState(false);
   const [totalHour, setTotalHour] = useState(0);
   const [totalRoomPrice, setTotalRoomPrice] = useState(0);
+  const [totalRoomServicePrice, setTotalRoomServicePrice] = useState([]);
   const [totalServicePrice, setTotalServicePrice] = useState(0);
   const [isPrint, setIsPrint] = useState(false);
   const [generateQR, setgenrateQR] = useState(undefined);
@@ -136,6 +137,8 @@ function FrmLapHoaDon() {
       hoaDonSelected.dsChiTietDichVuDto.length > 0
     ) {
       let productPrices = 0;
+      let roomProdutPricesNum = 0;
+      let roomProductPrices = [];
       for (let i = 0; i < hoaDonSelected.dsChiTietDichVuDto.length; i++) {
         price +=
           hoaDonSelected.dsChiTietDichVuDto[i].soLuong *
@@ -143,8 +146,47 @@ function FrmLapHoaDon() {
         productPrices +=
           hoaDonSelected.dsChiTietDichVuDto[i].soLuong *
           hoaDonSelected.dsChiTietDichVuDto[i].giaDichVu;
+        if (
+          i !== 0 &&
+          hoaDonSelected.dsChiTietDichVuDto[i].maPhong ===
+            hoaDonSelected.dsChiTietDichVuDto[i - 1].maPhong
+        ) {
+          roomProdutPricesNum +=
+            hoaDonSelected.dsChiTietDichVuDto[i].soLuong *
+            hoaDonSelected.dsChiTietDichVuDto[i].giaDichVu;
+          roomProductPrices[roomProductPrices.length - 1] = {
+            maPhong: hoaDonSelected.dsChiTietDichVuDto[i].maPhong,
+            tongTien: roomProdutPricesNum,
+          };
+        } else if (i === 0) {
+          roomProdutPricesNum +=
+            hoaDonSelected.dsChiTietDichVuDto[i].soLuong *
+            hoaDonSelected.dsChiTietDichVuDto[i].giaDichVu;
+          roomProductPrices = [
+            {
+              maPhong: hoaDonSelected.dsChiTietDichVuDto[i].maPhong,
+              tongTien: roomProdutPricesNum,
+            },
+          ];
+        } else {
+          roomProdutPricesNum =
+            hoaDonSelected.dsChiTietDichVuDto[i].soLuong *
+            hoaDonSelected.dsChiTietDichVuDto[i].giaDichVu;
+          roomProductPrices = [
+            ...roomProductPrices,
+            {
+              maPhong: hoaDonSelected.dsChiTietDichVuDto[i].maPhong,
+              tongTien:
+                hoaDonSelected.dsChiTietDichVuDto[i].soLuong *
+                hoaDonSelected.dsChiTietDichVuDto[i].giaDichVu,
+            },
+          ];
+        }
       }
       setTotalServicePrice(productPrices);
+      setTotalRoomServicePrice(roomProductPrices);
+    } else {
+      setTotalServicePrice(0);
     }
     setTotalPrice(price);
   }, [hoaDonSelected]);
@@ -388,12 +430,13 @@ function FrmLapHoaDon() {
     }
     // -------------------
   };
-  console.log("Hóa đơn selected:", hoaDonSelected);
+  // console.log("Hóa đơn selected:", hoaDonSelected);
   // console.log('Tổng tiền:', totalPrice);
-  console.log("Generate QR MOMO:", generateQR);
-  console.log("Kết quả thanh toán:", ketQuaThanhToan);
+  // console.log("Generate QR MOMO:", generateQR);
+  // console.log("Kết quả thanh toán:", ketQuaThanhToan);
   // console.log(`${dsHoaDon[0] && new Date(dsHoaDon[0].ngayNhanPhong)}`);
   // console.log(dsHoaDon);
+  // console.log(totalRoomServicePrice);
   return (
     <StyledContainer>
       <div className="container">
@@ -488,7 +531,7 @@ function FrmLapHoaDon() {
                 <div className="info-content">
                   <h4>Chi tiết hóa đơn</h4>
                   <div className="phong-container">
-                    <Table striped>
+                    <Table>
                       <thead>
                         <tr>
                           <th>Phòng</th>
@@ -539,7 +582,7 @@ function FrmLapHoaDon() {
                   </div>
                   <h4>Chi tiết dịch vụ</h4>
                   <div className="phong-container">
-                    <Table striped>
+                    <Table>
                       <thead>
                         <tr>
                           <th>Phòng</th>
@@ -557,20 +600,193 @@ function FrmLapHoaDon() {
                           hoaDonSelected.dsChiTietDichVuDto.map(
                             (dichVu, index) => {
                               // console.log(isSelected(room));
-                              return (
-                                <tr key={index}>
-                                  <td>{dichVu.maPhong}</td>
-                                  <td>{dichVu.tenDichVu}</td>
-                                  <td>{dichVu.tenLoaiDichVu}</td>
-                                  <td>{dichVu.giaDichVu.toLocaleString()}</td>
-                                  <td>{dichVu.soLuong}</td>
-                                  <td>
-                                    {(
-                                      dichVu.giaDichVu * dichVu.soLuong
-                                    ).toLocaleString()}
-                                  </td>
-                                </tr>
-                              );
+                              if (
+                                index === 0 ||
+                                (index !== 0 &&
+                                  dichVu.maPhong ===
+                                    hoaDonSelected.dsChiTietDichVuDto[index - 1]
+                                      .maPhong)
+                              ) {
+                                if (
+                                  index ===
+                                  hoaDonSelected.dsChiTietDichVuDto.length - 1
+                                ) {
+                                  return (
+                                    <>
+                                      <tr key={index}>
+                                        <td>{dichVu.maPhong}</td>
+                                        <td>{dichVu.tenDichVu}</td>
+                                        <td>{dichVu.tenLoaiDichVu}</td>
+                                        <td>
+                                          {dichVu.giaDichVu.toLocaleString()}
+                                        </td>
+                                        <td>{dichVu.soLuong}</td>
+                                        <td>
+                                          {(
+                                            dichVu.giaDichVu * dichVu.soLuong
+                                          ).toLocaleString()}
+                                        </td>
+                                      </tr>
+                                      {totalRoomServicePrice.map(
+                                        (roomPrice) => {
+                                          if (
+                                            roomPrice.maPhong === dichVu.maPhong
+                                          )
+                                            return (
+                                              <tr>
+                                                <td
+                                                  colSpan={5}
+                                                  style={{
+                                                    fontWeight: "bold",
+                                                    textAlign: "center",
+                                                  }}
+                                                >
+                                                  Tỗng tiền phòng{" "}
+                                                  {roomPrice.maPhong}
+                                                </td>
+                                                <td>
+                                                  {roomPrice.tongTien.toLocaleString()}
+                                                </td>
+                                              </tr>
+                                            );
+                                        }
+                                      )}
+                                    </>
+                                  );
+                                }
+                                return (
+                                  <tr key={index}>
+                                    <td>{dichVu.maPhong}</td>
+                                    <td>{dichVu.tenDichVu}</td>
+                                    <td>{dichVu.tenLoaiDichVu}</td>
+                                    <td>{dichVu.giaDichVu.toLocaleString()}</td>
+                                    <td>{dichVu.soLuong}</td>
+                                    <td>
+                                      {(
+                                        dichVu.giaDichVu * dichVu.soLuong
+                                      ).toLocaleString()}
+                                    </td>
+                                  </tr>
+                                );
+                              } else {
+                                if (
+                                  index ===
+                                  hoaDonSelected.dsChiTietDichVuDto.length - 1
+                                ) {
+                                  return (
+                                    <>
+                                      {totalRoomServicePrice.map(
+                                        (roomPrice) => {
+                                          if (
+                                            roomPrice.maPhong ===
+                                            hoaDonSelected.dsChiTietDichVuDto[
+                                              index - 1
+                                            ].maPhong
+                                          )
+                                            return (
+                                              <tr>
+                                                <td
+                                                  colSpan={5}
+                                                  style={{
+                                                    fontWeight: "bold",
+                                                    textAlign: "center",
+                                                  }}
+                                                >
+                                                  Tỗng tiền phòng{" "}
+                                                  {roomPrice.maPhong}
+                                                </td>
+                                                <td>
+                                                  {roomPrice.tongTien.toLocaleString()}
+                                                </td>
+                                              </tr>
+                                            );
+                                        }
+                                      )}
+                                      <tr key={index}>
+                                        <td>{dichVu.maPhong}</td>
+                                        <td>{dichVu.tenDichVu}</td>
+                                        <td>{dichVu.tenLoaiDichVu}</td>
+                                        <td>
+                                          {dichVu.giaDichVu.toLocaleString()}
+                                        </td>
+                                        <td>{dichVu.soLuong}</td>
+                                        <td>
+                                          {(
+                                            dichVu.giaDichVu * dichVu.soLuong
+                                          ).toLocaleString()}
+                                        </td>
+                                      </tr>
+                                      {totalRoomServicePrice.map(
+                                        (roomPrice, index) => {
+                                          if (
+                                            roomPrice.maPhong === dichVu.maPhong
+                                          )
+                                            return (
+                                              <tr>
+                                                <td
+                                                  colSpan={5}
+                                                  style={{
+                                                    fontWeight: "bold",
+                                                    textAlign: "center",
+                                                  }}
+                                                >
+                                                  Tỗng tiền phòng{" "}
+                                                  {roomPrice.maPhong}
+                                                </td>
+                                                <td>
+                                                  {roomPrice.tongTien.toLocaleString()}
+                                                </td>
+                                              </tr>
+                                            );
+                                        }
+                                      )}
+                                    </>
+                                  );
+                                }
+                                return (
+                                  <>
+                                    {totalRoomServicePrice.map((roomPrice) => {
+                                      if (
+                                        roomPrice.maPhong ===
+                                        hoaDonSelected.dsChiTietDichVuDto[
+                                          index - 1
+                                        ].maPhong
+                                      )
+                                        return (
+                                          <tr>
+                                            <td
+                                              colSpan={5}
+                                              style={{
+                                                fontWeight: "bold",
+                                                textAlign: "center",
+                                              }}
+                                            >
+                                              Tỗng tiền phòng{" "}
+                                              {roomPrice.maPhong}
+                                            </td>
+                                            <td>
+                                              {roomPrice.tongTien.toLocaleString()}
+                                            </td>
+                                          </tr>
+                                        );
+                                    })}
+                                    <tr key={index}>
+                                      <td>{dichVu.maPhong}</td>
+                                      <td>{dichVu.tenDichVu}</td>
+                                      <td>{dichVu.tenLoaiDichVu}</td>
+                                      <td>
+                                        {dichVu.giaDichVu.toLocaleString()}
+                                      </td>
+                                      <td>{dichVu.soLuong}</td>
+                                      <td>
+                                        {(
+                                          dichVu.giaDichVu * dichVu.soLuong
+                                        ).toLocaleString()}
+                                      </td>
+                                    </tr>
+                                  </>
+                                );
+                              }
                             }
                           )
                         ) : (
@@ -654,7 +870,7 @@ function FrmLapHoaDon() {
             <div className="btn-function">
               {/* Thanh toán momo */}
               {showThanhToanMOMO && generateQR && (
-                <Button variant="success" onClick={() => handleQRMOMO()}>
+                <Button style={{backgroundColor:'#D82D8B'}} variant="success" onClick={() => handleQRMOMO()}>
                   Thanh toán bằng MOMO
                 </Button>
               )}
@@ -696,6 +912,7 @@ function FrmLapHoaDon() {
           totalHour={totalHour}
           totalRoomPrice={totalRoomPrice}
           totalServicePrice={totalServicePrice}
+          totalRoomServicePrice={totalRoomServicePrice}
           onHandleCheckIn={onHandleCheckIn}
           isPrint={isPrint}
           setIsPrint={setIsPrint}

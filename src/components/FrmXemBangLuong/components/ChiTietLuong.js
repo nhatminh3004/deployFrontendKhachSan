@@ -75,7 +75,7 @@ function ChiTietLuong({ bangLuongSelected, setBangLuongSelected }) {
   return (
     <StyledContainer>
       <div className="container-styled">
-        <div ref={componentRef} className="booking-detail">
+        <div className="booking-detail">
           <div className="content-detail">
             <div
               className="bill-title"
@@ -233,41 +233,193 @@ function ChiTietLuong({ bangLuongSelected, setBangLuongSelected }) {
             Đóng
           </Button>
         </div>
-        {/* {!isPrint ? (
-          <div className="btn-container">
-            <Button variant="success" type="submit" onClick={onHandleCheckIn}>
-              Xác nhận
-            </Button>
-            <Button
-              variant="danger"
-              type="submit"
-              onClick={() => {
-                setShowConfirmBill(false);
-                setIsPrint(false);
+      </div>
+      <div
+        className="dis-non"
+        style={{
+          width: "100vw",
+          padding: "0.5rem",
+          height: "100vh",
+          display: "flex",
+          flexDirection: "column",
+          textAlign: "start",
+          backgroundColor: "#fff",
+          position: "relative",
+          zIndex: 1,
+          top: 0,
+          right: 0,
+        }}
+      >
+        <div
+          ref={componentRef}
+          style={{ display: "flex", flexDirection: "column", height: "95%" }}
+        >
+          <div
+            className="content-detail"
+            style={{
+              overflowY: "auto",
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                gap: "0.1rem",
+                justifyContent: "center",
+                alignItems: "center",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
               }}
             >
-              Hủy
-            </Button>
+              <div className="img-container">
+                <img
+                  className="logo-img"
+                  src="/logo1.png"
+                  alt="logo"
+                  style={{
+                    width: "200px",
+                    backgroundColor: "white",
+                    borderRadius: "150px",
+                  }}
+                />
+              </div>
+              <p
+                style={{
+                  fontSize: "3rem",
+                  fontWeight: "bold",
+                  marginBottom: 0,
+                }}
+              >
+                Khách Sạn Sama
+              </p>
+            </div>
+            <div>
+              <h2>
+                Bảng lương tháng {bangLuongSelected.thang} năm{" "}
+                {bangLuongSelected.nam}
+              </h2>
+            </div>
+            <div style={{ fontSize: "1.5rem" }}>
+              - Mà bảng lương: {bangLuongSelected.maBangLuong}
+              <br></br>- Mã nhân viên: {bangLuongSelected.nhanVien.maNhanVien}
+              <br></br>- Họ tên nhân viên: {bangLuongSelected.nhanVien.hoTen}
+              <br></br>- Lương cơ bản:{" "}
+              {bangLuongSelected.nhanVien.luongCoBan.toLocaleString()} VND
+            </div>
+            <div>
+              <div>
+                <h2>Chi tiết lương</h2>
+                <div style={{ overflowY: "auto" }}>
+                  <Table bordered={true}>
+                    <thead>
+                      <tr>
+                        <th style={{ fontSize: "1.5rem" }}>Ca làm việc</th>
+                        <th style={{ fontSize: "1.5rem" }}>
+                          Thời gian chấm công
+                        </th>
+                        <th style={{ fontSize: "1.5rem" }}>Số giờ</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {bangLuongSelected &&
+                      bangLuongSelected.dsChiTietBangLuong &&
+                      bangLuongSelected.dsChiTietBangLuong.length > 0 ? (
+                        bangLuongSelected.dsChiTietBangLuong.map(
+                          (chiTietBangLuong, index) => {
+                            // console.log(isSelected(room));
+                            return (
+                              <tr key={index}>
+                                <td style={{ fontSize: "1.5rem" }}>
+                                  {
+                                    chiTietBangLuong.bangChamCong
+                                      .chiTietPhanCong.caLamViec.tenCa
+                                  }{" "}
+                                  -{" "}
+                                  {chiTietBangLuong.bangChamCong.thu > 4
+                                    ? chiTietBangLuong.bangChamCong.thu === 5
+                                      ? "Thứ 7"
+                                      : "Chủ nhật"
+                                    : "Thứ " +
+                                      Number(
+                                        chiTietBangLuong.bangChamCong.thu + 2
+                                      )}
+                                </td>
+                                <td style={{ fontSize: "1.5rem" }}>
+                                  {isDate(
+                                    chiTietBangLuong.bangChamCong.ngayChamCong
+                                  )
+                                    ? formatDate(
+                                        chiTietBangLuong.bangChamCong
+                                          .ngayChamCong
+                                      )
+                                    : formatDate(
+                                        new Date(
+                                          chiTietBangLuong.bangChamCong.ngayChamCong
+                                        )
+                                      )}
+                                </td>
+                                <td style={{ fontSize: "1.5rem" }}>
+                                  {
+                                    chiTietBangLuong.bangChamCong
+                                      .chiTietPhanCong.caLamViec.soGio
+                                  }
+                                </td>
+                              </tr>
+                            );
+                          }
+                        )
+                      ) : (
+                        <tr>
+                          <td
+                            colSpan={3}
+                            style={{ textAlign: "center", fontSize: "1.5rem" }}
+                          >
+                            Không có dữ liệu
+                          </td>
+                        </tr>
+                      )}
+                      <tr>
+                        <td
+                          colSpan={2}
+                          style={{
+                            fontWeight: "bold",
+                            textAlign: "center",
+                            fontSize: "1.5rem",
+                          }}
+                        >
+                          Tổng số giờ
+                        </td>
+                        <td style={{ fontWeight: "bold", fontSize: "1.5rem" }}>
+                          {tongGio}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </Table>
+                </div>
+                <div
+                  className="price-container"
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    fontSize: "1.5rem",
+                  }}
+                >
+                  <p style={{ fontWeight: "bold", fontSize: "1.5rem" }}>
+                    Tổng tiền
+                  </p>
+                  <div
+                    className="total-price"
+                    style={{ fontWeight: "bold", fontSize: "1.5rem" }}
+                  >
+                    {bangLuongSelected &&
+                      bangLuongSelected.tongLuong.toLocaleString()}{" "}
+                    VND
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-        ) : (
-          <div className="btn-container">
-            <ReactToPrint
-              trigger={() => (
-                <Button variant="primary" onClick={() => handlePrint()}>
-                  In hóa đơn
-                </Button>
-              )}
-              content={() => componentRef.current}
-            />
-            <Button
-              variant="danger"
-              type="submit"
-              onClick={onHandleCancelPrint}
-            >
-              Hủy
-            </Button>
-          </div>
-        )} */}
+        </div>
       </div>
     </StyledContainer>
   );
@@ -377,6 +529,9 @@ const StyledContainer = styled.div`
       top: -25px;
       left: -260px;
     } */
+  }
+  .dis-non {
+    display: none !important;
   }
 `;
 export default ChiTietLuong;

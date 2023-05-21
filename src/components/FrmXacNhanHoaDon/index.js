@@ -11,6 +11,7 @@ function FrmXacNhanHoaDon({
   setShowConfirmBill,
   hoaDonSelected,
   totalPrice,
+  totalRoomServicePrice,
   totalHour,
   totalRoomPrice,
   totalServicePrice,
@@ -34,7 +35,7 @@ function FrmXacNhanHoaDon({
   return (
     <StyledContainer>
       <div className="container-styled">
-        <div ref={componentRef} className="booking-detail">
+        <div className="booking-detail">
           <div className="content-detail">
             <div
               className="bill-title"
@@ -58,7 +59,6 @@ function FrmXacNhanHoaDon({
                 />
               </div>
               <p
-                className="title"
                 style={{
                   fontSize: "2rem",
                   fontWeight: "bold",
@@ -84,7 +84,7 @@ function FrmXacNhanHoaDon({
               <br></br>- Ngày trả phòng:{" "}
               {hoaDonSelected &&
                 hoaDonSelected.ngayLap &&
-                formatDate(new Date(hoaDonSelected.ngayTraPhong))}
+                formatDate(new Date())}
               <br></br> - Thu ngân:{" "}
               {nhanVien && `${nhanVien.hoTen} - ${nhanVien.maNhanVien}`}
               <br></br>
@@ -188,20 +188,184 @@ function FrmXacNhanHoaDon({
                         hoaDonSelected.dsChiTietDichVuDto.map(
                           (dichVu, index) => {
                             // console.log(isSelected(room));
-                            return (
-                              <tr key={index}>
-                                <td>{dichVu.maPhong}</td>
-                                <td>{dichVu.tenDichVu}</td>
-                                <td>{dichVu.tenLoaiDichVu}</td>
-                                <td>{dichVu.giaDichVu.toLocaleString()}</td>
-                                <td>{dichVu.soLuong}</td>
-                                <td>
-                                  {(
-                                    dichVu.giaDichVu * dichVu.soLuong
-                                  ).toLocaleString()}
-                                </td>
-                              </tr>
-                            );
+                            if (
+                              index === 0 ||
+                              (index !== 0 &&
+                                dichVu.maPhong ===
+                                  hoaDonSelected.dsChiTietDichVuDto[index - 1]
+                                    .maPhong)
+                            ) {
+                              if (
+                                index ===
+                                hoaDonSelected.dsChiTietDichVuDto.length - 1
+                              ) {
+                                return (
+                                  <>
+                                    <tr key={index}>
+                                      <td>{dichVu.maPhong}</td>
+                                      <td>{dichVu.tenDichVu}</td>
+                                      <td>{dichVu.tenLoaiDichVu}</td>
+                                      <td>
+                                        {dichVu.giaDichVu.toLocaleString()}
+                                      </td>
+                                      <td>{dichVu.soLuong}</td>
+                                      <td>
+                                        {(
+                                          dichVu.giaDichVu * dichVu.soLuong
+                                        ).toLocaleString()}
+                                      </td>
+                                    </tr>
+                                    {totalRoomServicePrice.map((roomPrice) => {
+                                      if (roomPrice.maPhong === dichVu.maPhong)
+                                        return (
+                                          <tr>
+                                            <td
+                                              colSpan={5}
+                                              style={{
+                                                fontWeight: "bold",
+                                                textAlign: "center",
+                                              }}
+                                            >
+                                              Tỗng tiền phòng{" "}
+                                              {roomPrice.maPhong}
+                                            </td>
+                                            <td>
+                                              {roomPrice.tongTien.toLocaleString()}
+                                            </td>
+                                          </tr>
+                                        );
+                                    })}
+                                  </>
+                                );
+                              }
+                              return (
+                                <tr key={index}>
+                                  <td>{dichVu.maPhong}</td>
+                                  <td>{dichVu.tenDichVu}</td>
+                                  <td>{dichVu.tenLoaiDichVu}</td>
+                                  <td>{dichVu.giaDichVu.toLocaleString()}</td>
+                                  <td>{dichVu.soLuong}</td>
+                                  <td>
+                                    {(
+                                      dichVu.giaDichVu * dichVu.soLuong
+                                    ).toLocaleString()}
+                                  </td>
+                                </tr>
+                              );
+                            } else {
+                              if (
+                                index ===
+                                hoaDonSelected.dsChiTietDichVuDto.length - 1
+                              ) {
+                                return (
+                                  <>
+                                    {totalRoomServicePrice.map((roomPrice) => {
+                                      if (
+                                        roomPrice.maPhong ===
+                                        hoaDonSelected.dsChiTietDichVuDto[
+                                          index - 1
+                                        ].maPhong
+                                      )
+                                        return (
+                                          <tr>
+                                            <td
+                                              colSpan={5}
+                                              style={{
+                                                fontWeight: "bold",
+                                                textAlign: "center",
+                                              }}
+                                            >
+                                              Tỗng tiền phòng{" "}
+                                              {roomPrice.maPhong}
+                                            </td>
+                                            <td>
+                                              {roomPrice.tongTien.toLocaleString()}
+                                            </td>
+                                          </tr>
+                                        );
+                                    })}
+                                    <tr key={index}>
+                                      <td>{dichVu.maPhong}</td>
+                                      <td>{dichVu.tenDichVu}</td>
+                                      <td>{dichVu.tenLoaiDichVu}</td>
+                                      <td>
+                                        {dichVu.giaDichVu.toLocaleString()}
+                                      </td>
+                                      <td>{dichVu.soLuong}</td>
+                                      <td>
+                                        {(
+                                          dichVu.giaDichVu * dichVu.soLuong
+                                        ).toLocaleString()}
+                                      </td>
+                                    </tr>
+                                    {totalRoomServicePrice.map(
+                                      (roomPrice, index) => {
+                                        if (
+                                          roomPrice.maPhong === dichVu.maPhong
+                                        )
+                                          return (
+                                            <tr>
+                                              <td
+                                                colSpan={5}
+                                                style={{
+                                                  fontWeight: "bold",
+                                                  textAlign: "center",
+                                                }}
+                                              >
+                                                Tỗng tiền phòng{" "}
+                                                {roomPrice.maPhong}
+                                              </td>
+                                              <td>
+                                                {roomPrice.tongTien.toLocaleString()}
+                                              </td>
+                                            </tr>
+                                          );
+                                      }
+                                    )}
+                                  </>
+                                );
+                              }
+                              return (
+                                <>
+                                  {totalRoomServicePrice.map((roomPrice) => {
+                                    if (
+                                      roomPrice.maPhong ===
+                                      hoaDonSelected.dsChiTietDichVuDto[
+                                        index - 1
+                                      ].maPhong
+                                    )
+                                      return (
+                                        <tr>
+                                          <td
+                                            colSpan={5}
+                                            style={{
+                                              fontWeight: "bold",
+                                              textAlign: "center",
+                                            }}
+                                          >
+                                            Tỗng tiền phòng {roomPrice.maPhong}
+                                          </td>
+                                          <td>
+                                            {roomPrice.tongTien.toLocaleString()}
+                                          </td>
+                                        </tr>
+                                      );
+                                  })}
+                                  <tr key={index}>
+                                    <td>{dichVu.maPhong}</td>
+                                    <td>{dichVu.tenDichVu}</td>
+                                    <td>{dichVu.tenLoaiDichVu}</td>
+                                    <td>{dichVu.giaDichVu.toLocaleString()}</td>
+                                    <td>{dichVu.soLuong}</td>
+                                    <td>
+                                      {(
+                                        dichVu.giaDichVu * dichVu.soLuong
+                                      ).toLocaleString()}
+                                    </td>
+                                  </tr>
+                                </>
+                              );
+                            }
                           }
                         )
                       ) : (
@@ -301,6 +465,498 @@ function FrmXacNhanHoaDon({
             </Button>
           </div>
         )}
+      </div>
+
+      <div
+        className="dis-non"
+        style={{
+          width: "100vw",
+          padding: "0.5rem",
+          height: "100vh",
+          display: "flex",
+          flexDirection: "column",
+          textAlign: "start",
+          backgroundColor: "#fff",
+          position: "relative",
+          zIndex: 1,
+          top: 0,
+          right: 0,
+        }}
+      >
+        <div
+          ref={componentRef}
+          style={{ display: "flex", flexDirection: "column", height: "95%" }}
+        >
+          <div
+            style={{
+              overflowY: "auto",
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                gap: "0.1rem",
+                justifyContent: "center",
+                alignItems: "center",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <div>
+                <img
+                  className="logo-img"
+                  src="/logo1.png"
+                  alt="logo"
+                  style={{
+                    width: "200px",
+                    backgroundColor: "white",
+                    borderRadius: "150px",
+                  }}
+                />
+              </div>
+              <p
+                style={{
+                  fontSize: "3rem",
+                  fontWeight: "bold",
+                  marginBottom: 0,
+                }}
+              >
+                Khách Sạn Sama
+              </p>
+            </div>
+            <div>
+              <h2>Hóa đơn</h2>
+            </div>
+            <div style={{ fontSize: "1.5rem" }}>
+              - Mà hóa đơn: {hoaDonSelected && hoaDonSelected.maHoaDon}
+              <br></br>- Ngày đặt phòng:{" "}
+              {hoaDonSelected &&
+                hoaDonSelected.ngayLap &&
+                formatDate(new Date(hoaDonSelected.phieuDatPhong.ngayDatPhong))}
+              <br></br>- Ngày nhận phòng:{" "}
+              {hoaDonSelected &&
+                hoaDonSelected.ngayLap &&
+                formatDate(new Date(hoaDonSelected.ngayNhanPhong))}
+              <br></br>- Ngày trả phòng:{" "}
+              {hoaDonSelected &&
+                hoaDonSelected.ngayLap &&
+                formatDate(new Date())}
+              <br></br> - Thu ngân:{" "}
+              {nhanVien && `${nhanVien.hoTen} - ${nhanVien.maNhanVien}`}
+              <br></br>
+            </div>
+            <div>
+              <h3>Thông tin khách hàng</h3>
+              <div style={{ fontSize: "1.5rem" }}>
+                - Họ tên:{" "}
+                {hoaDonSelected &&
+                  hoaDonSelected.khachHang &&
+                  hoaDonSelected.khachHang.hoTen}
+                <br></br>- CCCD:{" "}
+                {hoaDonSelected &&
+                  hoaDonSelected.khachHang &&
+                  hoaDonSelected.khachHang.cccdKhachHang}
+                <br></br>- Số điện thoại:{" "}
+                {hoaDonSelected &&
+                  hoaDonSelected.khachHang &&
+                  hoaDonSelected.khachHang.soDienThoaiKH}
+                <br></br>- Email:{" "}
+                {hoaDonSelected &&
+                  hoaDonSelected.khachHang &&
+                  hoaDonSelected.khachHang.emailKH}
+                <br></br>- Địa chỉ:{" "}
+                {hoaDonSelected &&
+                  hoaDonSelected.khachHang &&
+                  hoaDonSelected.khachHang.diaChiKH}
+                <br></br>
+              </div>
+            </div>
+            <div>
+              <div>
+                <h2>Chi tiết hóa đơn</h2>
+                <div style={{ overflowY: "auto" }}>
+                  <Table bordered={true}>
+                    <thead>
+                      <tr>
+                        <th style={{ fontSize: "1.5rem" }}>Phòng</th>
+                        <th style={{ fontSize: "1.5rem" }}>Loại</th>
+                        <th style={{ fontSize: "1.5rem" }}>Giá (1 giờ)</th>
+                        <th style={{ fontSize: "1.5rem" }}>Tổng giờ</th>
+                        <th style={{ fontSize: "1.5rem" }}>T tiền</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {hoaDonSelected &&
+                      hoaDonSelected.dsPhong &&
+                      hoaDonSelected.dsPhong.length > 0 ? (
+                        hoaDonSelected.dsPhong.map((room, index) => {
+                          // console.log(isSelected(room));
+                          return (
+                            <tr key={index}>
+                              <td style={{ fontSize: "1.5rem" }}>
+                                {room.maPhong}
+                              </td>
+                              <td style={{ fontSize: "1.5rem" }}>
+                                {room.tenLoaiPhong}
+                              </td>
+                              <td style={{ fontSize: "1.5rem" }}>
+                                {room.giaPhong.toLocaleString()}
+                              </td>
+                              <td style={{ fontSize: "1.5rem" }}>
+                                {totalHour}
+                              </td>
+                              <td style={{ fontSize: "1.5rem" }}>
+                                {(totalHour * room.giaPhong).toLocaleString()}
+                              </td>
+                            </tr>
+                          );
+                        })
+                      ) : (
+                        <tr>
+                          <td colSpan={5} style={{ textAlign: "center" }}>
+                            Không có dữ liệu
+                          </td>
+                        </tr>
+                      )}
+                      <tr>
+                        <td
+                          colSpan={4}
+                          style={{
+                            fontWeight: "bold",
+                            textAlign: "center",
+                            fontSize: "1.5rem",
+                          }}
+                        >
+                          Tồng thành tiền
+                        </td>
+                        <td style={{ fontWeight: "bold", fontSize: "1.5rem" }}>
+                          {totalRoomPrice.toLocaleString()} VND
+                        </td>
+                      </tr>
+                    </tbody>
+                  </Table>
+                </div>
+                <h2>Chi tiết dịch vụ</h2>
+                <div style={{ overflowY: "auto" }}>
+                  <Table bordered={true}>
+                    <thead>
+                      <tr>
+                        <th style={{ fontSize: "1.5rem" }}>Phòng</th>
+                        <th style={{ fontSize: "1.5rem" }}>Tên</th>
+                        <th style={{ fontSize: "1.5rem" }}>Đơn vị</th>
+                        <th style={{ fontSize: "1.5rem" }}>Giá</th>
+                        <th style={{ fontSize: "1.5rem" }}>SL</th>
+                        <th style={{ fontSize: "1.5rem" }}>T tiền</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {hoaDonSelected &&
+                      hoaDonSelected.dsChiTietDichVuDto &&
+                      hoaDonSelected.dsChiTietDichVuDto.length > 0 ? (
+                        hoaDonSelected.dsChiTietDichVuDto.map(
+                          (dichVu, index) => {
+                            // console.log(isSelected(room));
+                            if (
+                              index === 0 ||
+                              (index !== 0 &&
+                                dichVu.maPhong ===
+                                  hoaDonSelected.dsChiTietDichVuDto[index - 1]
+                                    .maPhong)
+                            ) {
+                              if (
+                                index ===
+                                hoaDonSelected.dsChiTietDichVuDto.length - 1
+                              ) {
+                                return (
+                                  <>
+                                    <tr key={index}>
+                                      <td style={{ fontSize: "1.5rem" }}>
+                                        {dichVu.maPhong}
+                                      </td>
+                                      <td style={{ fontSize: "1.5rem" }}>
+                                        {dichVu.tenDichVu}
+                                      </td>
+                                      <td style={{ fontSize: "1.5rem" }}>
+                                        {dichVu.tenLoaiDichVu}
+                                      </td>
+                                      <td style={{ fontSize: "1.5rem" }}>
+                                        {dichVu.giaDichVu.toLocaleString()}
+                                      </td>
+                                      <td style={{ fontSize: "1.5rem" }}>
+                                        {dichVu.soLuong}
+                                      </td>
+                                      <td style={{ fontSize: "1.5rem" }}>
+                                        {(
+                                          dichVu.giaDichVu * dichVu.soLuong
+                                        ).toLocaleString()}
+                                      </td>
+                                    </tr>
+                                    {totalRoomServicePrice.map((roomPrice) => {
+                                      if (roomPrice.maPhong === dichVu.maPhong)
+                                        return (
+                                          <tr>
+                                            <td
+                                              colSpan={5}
+                                              style={{
+                                                fontWeight: "bold",
+                                                textAlign: "center",
+                                                fontSize: "1.5rem",
+                                              }}
+                                            >
+                                              Tỗng tiền phòng{" "}
+                                              {roomPrice.maPhong}
+                                            </td>
+                                            <td style={{ fontSize: "1.5rem" }}>
+                                              {roomPrice.tongTien.toLocaleString()}
+                                            </td>
+                                          </tr>
+                                        );
+                                    })}
+                                  </>
+                                );
+                              }
+                              return (
+                                <tr key={index}>
+                                  <td style={{ fontSize: "1.5rem" }}>
+                                    {dichVu.maPhong}
+                                  </td>
+                                  <td style={{ fontSize: "1.5rem" }}>
+                                    {dichVu.tenDichVu}
+                                  </td>
+                                  <td style={{ fontSize: "1.5rem" }}>
+                                    {dichVu.tenLoaiDichVu}
+                                  </td>
+                                  <td style={{ fontSize: "1.5rem" }}>
+                                    {dichVu.giaDichVu.toLocaleString()}
+                                  </td>
+                                  <td style={{ fontSize: "1.5rem" }}>
+                                    {dichVu.soLuong}
+                                  </td>
+                                  <td style={{ fontSize: "1.5rem" }}>
+                                    {(
+                                      dichVu.giaDichVu * dichVu.soLuong
+                                    ).toLocaleString()}
+                                  </td>
+                                </tr>
+                              );
+                            } else {
+                              if (
+                                index ===
+                                hoaDonSelected.dsChiTietDichVuDto.length - 1
+                              ) {
+                                return (
+                                  <>
+                                    {totalRoomServicePrice.map((roomPrice) => {
+                                      if (
+                                        roomPrice.maPhong ===
+                                        hoaDonSelected.dsChiTietDichVuDto[
+                                          index - 1
+                                        ].maPhong
+                                      )
+                                        return (
+                                          <tr>
+                                            <td
+                                              colSpan={5}
+                                              style={{
+                                                fontWeight: "bold",
+                                                textAlign: "center",
+                                                fontSize: "1.5rem",
+                                              }}
+                                            >
+                                              Tỗng tiền phòng{" "}
+                                              {roomPrice.maPhong}
+                                            </td>
+                                            <td style={{ fontSize: "1.5rem" }}>
+                                              {roomPrice.tongTien.toLocaleString()}
+                                            </td>
+                                          </tr>
+                                        );
+                                    })}
+                                    <tr key={index}>
+                                      <td style={{ fontSize: "1.5rem" }}>
+                                        {dichVu.maPhong}
+                                      </td>
+                                      <td style={{ fontSize: "1.5rem" }}>
+                                        {dichVu.tenDichVu}
+                                      </td>
+                                      <td style={{ fontSize: "1.5rem" }}>
+                                        {dichVu.tenLoaiDichVu}
+                                      </td>
+                                      <td style={{ fontSize: "1.5rem" }}>
+                                        {dichVu.giaDichVu.toLocaleString()}
+                                      </td>
+                                      <td style={{ fontSize: "1.5rem" }}>
+                                        {dichVu.soLuong}
+                                      </td>
+                                      <td style={{ fontSize: "1.5rem" }}>
+                                        {(
+                                          dichVu.giaDichVu * dichVu.soLuong
+                                        ).toLocaleString()}
+                                      </td>
+                                    </tr>
+                                    {totalRoomServicePrice.map((roomPrice) => {
+                                      if (roomPrice.maPhong === dichVu.maPhong)
+                                        return (
+                                          <tr>
+                                            <td
+                                              colSpan={5}
+                                              style={{
+                                                fontWeight: "bold",
+                                                textAlign: "center",
+                                                fontSize: "1.5rem",
+                                              }}
+                                            >
+                                              Tỗng tiền phòng{" "}
+                                              {roomPrice.maPhong}
+                                            </td>
+                                            <td style={{ fontSize: "1.5rem" }}>
+                                              {roomPrice.tongTien.toLocaleString()}
+                                            </td>
+                                          </tr>
+                                        );
+                                    })}
+                                  </>
+                                );
+                              }
+                              return (
+                                <>
+                                  {totalRoomServicePrice.map((roomPrice) => {
+                                    if (
+                                      roomPrice.maPhong ===
+                                      hoaDonSelected.dsChiTietDichVuDto[
+                                        index - 1
+                                      ].maPhong
+                                    )
+                                      return (
+                                        <tr>
+                                          <td
+                                            colSpan={5}
+                                            style={{
+                                              fontWeight: "bold",
+                                              textAlign: "center",
+                                              fontSize: "1.5rem",
+                                            }}
+                                          >
+                                            Tỗng tiền phòng {roomPrice.maPhong}
+                                          </td>
+                                          <td style={{ fontSize: "1.5rem" }}>
+                                            {roomPrice.tongTien.toLocaleString()}
+                                          </td>
+                                        </tr>
+                                      );
+                                  })}
+                                  <tr key={index}>
+                                    <td style={{ fontSize: "1.5rem" }}>
+                                      {dichVu.maPhong}
+                                    </td>
+                                    <td style={{ fontSize: "1.5rem" }}>
+                                      {dichVu.tenDichVu}
+                                    </td>
+                                    <td style={{ fontSize: "1.5rem" }}>
+                                      {dichVu.tenLoaiDichVu}
+                                    </td>
+                                    <td style={{ fontSize: "1.5rem" }}>
+                                      {dichVu.giaDichVu.toLocaleString()}
+                                    </td>
+                                    <td style={{ fontSize: "1.5rem" }}>
+                                      {dichVu.soLuong}
+                                    </td>
+                                    <td style={{ fontSize: "1.5rem" }}>
+                                      {(
+                                        dichVu.giaDichVu * dichVu.soLuong
+                                      ).toLocaleString()}
+                                    </td>
+                                  </tr>
+                                </>
+                              );
+                            }
+                          }
+                        )
+                      ) : (
+                        <tr>
+                          <td
+                            colSpan={6}
+                            style={{ textAlign: "center", fontSize: "1.5rem" }}
+                          >
+                            Không có dữ liệu
+                          </td>
+                        </tr>
+                      )}
+                      <tr>
+                        <td
+                          colSpan={5}
+                          style={{
+                            fontWeight: "bold",
+                            textAlign: "center",
+                            fontSize: "1.5rem",
+                          }}
+                        >
+                          Tồng thành tiền
+                        </td>
+                        <td style={{ fontWeight: "bold", fontSize: "1.5rem" }}>
+                          {totalServicePrice.toLocaleString()} VND
+                        </td>
+                      </tr>
+                    </tbody>
+                  </Table>
+                </div>
+                <div
+                  className="price-container"
+                  style={{ display: "flex", justifyContent: "space-between" }}
+                >
+                  <p style={{ fontWeight: "bold", fontSize: "1.5rem" }}>
+                    Tổng tiền
+                  </p>
+                  <div
+                    className="total-price"
+                    style={{ fontWeight: "bold", fontSize: "1.5rem" }}
+                  >
+                    {totalPrice && totalPrice.toLocaleString()} VND
+                  </div>
+                </div>
+                <div
+                  className="price-container"
+                  style={{ display: "flex", justifyContent: "space-between" }}
+                >
+                  <p style={{ fontWeight: "bold", fontSize: "1.5rem" }}>
+                    Tiền nhận
+                  </p>
+                  <div
+                    className="total-price"
+                    style={{ fontWeight: "bold", fontSize: "1.5rem" }}
+                  >
+                    {hoaDonSelected.tienNhan
+                      ? Number(hoaDonSelected.tienNhan).toLocaleString()
+                      : 0}{" "}
+                    VND
+                  </div>
+                </div>
+                <div
+                  className="price-container"
+                  style={{ display: "flex", justifyContent: "space-between" }}
+                >
+                  <p style={{ fontWeight: "bold", fontSize: "1.5rem" }}>
+                    Tiền thừa
+                  </p>
+                  <div
+                    className="total-price"
+                    style={{ fontWeight: "bold", fontSize: "1.5rem" }}
+                  >
+                    {totalPrice &&
+                      (hoaDonSelected.tienNhan - totalPrice).toLocaleString()}
+                    {/* {hoaDonSelected.tienNhan - totalPrice < 0
+                        ? 0
+                        : (
+                            hoaDonSelected.tienNhan - totalPrice
+                          ).toLocaleString()}{" "} */}{" "}
+                    VND
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </StyledContainer>
   );
@@ -410,6 +1066,9 @@ const StyledContainer = styled.div`
       top: -25px;
       left: -260px;
     } */
+  }
+  .dis-non {
+    display: none !important;
   }
 `;
 export default FrmXacNhanHoaDon;

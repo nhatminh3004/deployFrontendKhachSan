@@ -17,6 +17,7 @@ import {
   getAllBillsRoute,
   getAllRoomBillsRoute,
   getSearchBillsRoute,
+  getSearchRoomBillsRoute,
 } from "../../utils/APIRoutes";
 import ChiTietHoaDon from "./components/ChiTietHoaDon";
 
@@ -27,6 +28,7 @@ function FrmTimKiemHoaDon() {
   const [totalHour, setTotalHour] = useState(0);
   const [totalRoomPrice, setTotalRoomPrice] = useState(0);
   const [totalServicePrice, setTotalServicePrice] = useState(0);
+  const [totalRoomServicePrice, setTotalRoomServicePrice] = useState([]);
   const [search, setSearch] = useState([
     {
       theo: "Theo mã hóa đơn",
@@ -69,6 +71,8 @@ function FrmTimKiemHoaDon() {
         hoaDonSelected.dsChiTietDichVuDto.length > 0
       ) {
         let productPrices = 0;
+        let roomProdutPricesNum = 0;
+        let roomProductPrices = [];
         for (let i = 0; i < hoaDonSelected.dsChiTietDichVuDto.length; i++) {
           price +=
             hoaDonSelected.dsChiTietDichVuDto[i].soLuong *
@@ -76,8 +80,47 @@ function FrmTimKiemHoaDon() {
           productPrices +=
             hoaDonSelected.dsChiTietDichVuDto[i].soLuong *
             hoaDonSelected.dsChiTietDichVuDto[i].giaDichVu;
+          if (
+            i !== 0 &&
+            hoaDonSelected.dsChiTietDichVuDto[i].maPhong ===
+              hoaDonSelected.dsChiTietDichVuDto[i - 1].maPhong
+          ) {
+            roomProdutPricesNum +=
+              hoaDonSelected.dsChiTietDichVuDto[i].soLuong *
+              hoaDonSelected.dsChiTietDichVuDto[i].giaDichVu;
+            roomProductPrices[roomProductPrices.length - 1] = {
+              maPhong: hoaDonSelected.dsChiTietDichVuDto[i].maPhong,
+              tongTien: roomProdutPricesNum,
+            };
+          } else if (i === 0) {
+            roomProdutPricesNum +=
+              hoaDonSelected.dsChiTietDichVuDto[i].soLuong *
+              hoaDonSelected.dsChiTietDichVuDto[i].giaDichVu;
+            roomProductPrices = [
+              {
+                maPhong: hoaDonSelected.dsChiTietDichVuDto[i].maPhong,
+                tongTien: roomProdutPricesNum,
+              },
+            ];
+          } else {
+            roomProdutPricesNum =
+              hoaDonSelected.dsChiTietDichVuDto[i].soLuong *
+              hoaDonSelected.dsChiTietDichVuDto[i].giaDichVu;
+            roomProductPrices = [
+              ...roomProductPrices,
+              {
+                maPhong: hoaDonSelected.dsChiTietDichVuDto[i].maPhong,
+                tongTien:
+                  hoaDonSelected.dsChiTietDichVuDto[i].soLuong *
+                  hoaDonSelected.dsChiTietDichVuDto[i].giaDichVu,
+              },
+            ];
+          }
         }
         setTotalServicePrice(productPrices);
+        setTotalRoomServicePrice(roomProductPrices);
+      } else {
+        setTotalServicePrice(0);
       }
       setTotalPrice(price);
     }
@@ -154,7 +197,7 @@ function FrmTimKiemHoaDon() {
   //   }
   // }, [phongSelected]);
   const onHandleSearch = async () => {
-    const { data } = await axios.post(getSearchBillsRoute, search, {
+    const { data } = await axios.post(getSearchRoomBillsRoute, search, {
       headers: {
         "Content-Type": "application/json;charset=UTF-8",
         "Access-Control-Allow-Origin": "http://localhost:3000",
@@ -315,6 +358,7 @@ function FrmTimKiemHoaDon() {
           totalHour={totalHour}
           totalRoomPrice={totalRoomPrice}
           totalServicePrice={totalServicePrice}
+          totalRoomServicePrice={totalRoomServicePrice}
         />
       )}
       {toast && (
