@@ -88,7 +88,10 @@ function Inputs({
       if (soTang < 10) {
         soTang = "0" + soTang;
       }
-      let soPhong = phongMoi.tenPhong ? phongMoi.tenPhong.slice(6) : "000";
+      let soPhong = phongMoi.tenPhong ? phongMoi.tenPhong.slice(6) : "00";
+      if (Number(soPhong) < 10) {
+        soPhong = "0" + soPhong;
+      }
       setPhongMoi({
         ...phongMoi,
         [name]: e.target.value,

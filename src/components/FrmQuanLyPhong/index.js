@@ -152,9 +152,9 @@ function FrmQuanLyPhong() {
     for (var i = 0; i < dsPhong.length; i++) {
       if (maPhong === dsPhong[i].maPhong) {
         setToast({
-          header: `Tầng ${dsPhong[i].maPhong.slice(1, 3)} đã có phòng ${dsPhong[
-            i
-          ].maPhong.slice(4)}`,
+          header: `Tầng ${Number(
+            dsPhong[i].maPhong.slice(0, 2)
+          )} đã có phòng ${dsPhong[i].maPhong.slice(3)}`,
           content: "",
           bg: "danger",
           textColor: "#fff",
