@@ -870,8 +870,8 @@ function FrmLapHoaDon() {
             <div className="btn-function">
               {/* Thanh toán momo */}
               {showThanhToanMOMO && generateQR && (
-                <Button  variant="success" onClick={() => handleQRMOMO()} style={{backgroundColor:'#D82D8B'}}>
-                  Thanh toán bằng MOMO QR
+                <Button style={{backgroundColor:'#D82D8B'}} variant="success" onClick={() => handleQRMOMO()}>
+                  Thanh toán bằng MOMO
                 </Button>
               )}
               {showButtonXacNhan && (
@@ -928,6 +928,7 @@ function FrmLapHoaDon() {
           hoaDonSelected={hoaDonSelected}
           totalPrice={totalPrice}
           totalHour={totalHour}
+          totalRoomServicePrice={totalRoomServicePrice}
           totalRoomPrice={totalRoomPrice}
           totalServicePrice={totalServicePrice}
           onHandleCheckInMOMO={onHandleCheckInMOMO}

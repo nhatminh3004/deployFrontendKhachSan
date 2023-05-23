@@ -21,7 +21,7 @@ function createWindow() {
   // and load the index.html of the app.
   // win.loadFile("index.html");
   win.loadURL(
-   'https://sama-hotel.netlify.app'
+    'https://sama-hotel.netlify.app'
   );
   // Open the DevTools.
   if (isDev) {
