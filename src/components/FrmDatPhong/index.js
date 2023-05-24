@@ -125,6 +125,18 @@ function FrmDatPhong() {
       });
       return false;
     }
+    if (
+      dayjs(ngayNhanPhong).toDate().getTime() ==
+      dayjs(ngayTraPhong).toDate().getTime()
+    ) {
+      setToast({
+        header: "Ngày nhận phòng phải khác ngày trả phòng",
+        content: "",
+        bg: "danger",
+        textColor: "#fff",
+      });
+      return false;
+    }
     // if (dayjs(new Date()).isAfter(dayjs(ngayNhanPhong))) {
     //   setToast({
     //     header: "Ngày nhận phòng không được trước ngày hiện tại",

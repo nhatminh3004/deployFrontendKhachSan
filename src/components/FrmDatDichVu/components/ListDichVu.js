@@ -31,7 +31,10 @@ function ListDichVu({ setDichVuNew, dichVuNew, showDichVu, setShowDichVu }) {
     // console.log(data);
     setListDichVu(data);
   };
-  const handleOnChangeSoLuong = (e) => {
+  const handleOnChangeSoLuong = (e, soLuongTon) => {
+    if (soLuongTon < Number(e.target.value)) {
+      return;
+    }
     if (soLuongDichVu && soLuongDichVu.length > 0) {
       let temp = [...soLuongDichVu];
       for (let i = 0; i < soLuongDichVu.length; i++) {
@@ -126,7 +129,7 @@ function ListDichVu({ setDichVuNew, dichVuNew, showDichVu, setShowDichVu }) {
                   return (
                     <tr
                       key={index}
-                    // className={`${isSelected(dichVu) ? "row-selected" : ""}`}
+                      // className={`${isSelected(dichVu) ? "row-selected" : ""}`}
                     >
                       <td>{dichVu.tenDichVu}</td>
                       {/* <td
@@ -145,12 +148,14 @@ function ListDichVu({ setDichVuNew, dichVuNew, showDichVu, setShowDichVu }) {
                           name={dichVu.maDichVu}
                           value={
                             soLuongDichVu &&
-                              soLuongDichVu.length > 0 &&
-                              getSoLuong(dichVu.maDichVu)
+                            soLuongDichVu.length > 0 &&
+                            getSoLuong(dichVu.maDichVu)
                               ? getSoLuong(dichVu.maDichVu)
                               : 0
                           }
-                          onChange={(e) => handleOnChangeSoLuong(e)}
+                          onChange={(e) =>
+                            handleOnChangeSoLuong(e, dichVu.soLuong)
+                          }
                         />
                       </td>
                       <td>{dichVu.soLuong}</td>
