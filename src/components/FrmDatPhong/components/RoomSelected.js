@@ -24,7 +24,7 @@ function RoomSelected({ roomChoosen, setShowDetail, setRoomChoosen }) {
             <th>Phòng</th>
             <th>Loại phòng</th>
             <th>Tầng</th>
-            <th>Giá (1 giờ)</th>
+            <th>Giá (1 ngày)</th>
             <th></th>
           </tr>
         </thead>

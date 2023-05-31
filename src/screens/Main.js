@@ -167,7 +167,7 @@ function Main() {
               nhanVien.taiKhoan &&
               nhanVien.taiKhoan.daKichHoat &&
               subNavSelected.subnav === "report-staff" && <TabThongKe />}
-            {nhanVien &&
+            {/* {nhanVien &&
               nhanVien.taiKhoan &&
               nhanVien.taiKhoan.daKichHoat &&
               nhanVien.taiKhoan.vaiTro.tenVaiTro === "ROLE_MANAGEMENT" &&
@@ -186,7 +186,7 @@ function Main() {
               nhanVien.taiKhoan &&
               nhanVien.taiKhoan.daKichHoat &&
               nhanVien.taiKhoan.vaiTro.tenVaiTro === "ROLE_MANAGEMENT" &&
-              subNavSelected.subnav === "payrolls" && <FrmTinhLuong />}
+              subNavSelected.subnav === "payrolls" && <FrmTinhLuong />} */}
             {nhanVien &&
               nhanVien.taiKhoan &&
               nhanVien.taiKhoan.daKichHoat &&
@@ -214,14 +214,14 @@ function Main() {
                   />
                 </div>
               )}
-            {nhanVien &&
+            {/* {nhanVien &&
               nhanVien.taiKhoan &&
               nhanVien.taiKhoan.daKichHoat &&
               subNavSelected.subnav === "watch-assignment" && <FrmXemLich />}
             {nhanVien &&
               nhanVien.taiKhoan &&
               nhanVien.taiKhoan.daKichHoat &&
-              subNavSelected.subnav === "watch-payrolls" && <FrmXemBangLuong />}
+              subNavSelected.subnav === "watch-payrolls" && <FrmXemBangLuong />} */}
           </div>
         </div>
       </Container>

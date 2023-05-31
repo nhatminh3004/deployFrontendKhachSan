@@ -20,12 +20,14 @@ import {
   getSearchRoomBillsRoute,
 } from "../../utils/APIRoutes";
 import ChiTietHoaDon from "./components/ChiTietHoaDon";
+import { diff_dates } from "../../utils/functions";
 
 function FrmTimKiemHoaDon() {
   const [hoaDonSelected, setHoaDonSelected] = useState(undefined);
   const [dsHoaDon, setDsHoaDon] = useState(undefined);
   const [totalPrice, setTotalPrice] = useState(0);
   const [totalHour, setTotalHour] = useState(0);
+  const [totalDate, setTotalDate] = useState(0);
   const [totalRoomPrice, setTotalRoomPrice] = useState(0);
   const [totalServicePrice, setTotalServicePrice] = useState(0);
   const [totalRoomServicePrice, setTotalRoomServicePrice] = useState([]);
@@ -54,6 +56,16 @@ function FrmTimKiemHoaDon() {
       }
       let totalHours = diff_hours(ngayNhan, ngayTra);
       setTotalHour(totalHours);
+      ngayNhan.setHours(0);
+      ngayNhan.setMinutes(0);
+      ngayNhan.setSeconds(0);
+      ngayTra.setHours(0);
+      ngayTra.setMinutes(0);
+      ngayTra.setSeconds(0);
+
+      let totalDates =
+        diff_dates(ngayNhan, ngayTra) === 0 ? 1 : diff_dates(ngayNhan, ngayTra);
+      setTotalDate(totalDates);
       if (
         hoaDonSelected &&
         hoaDonSelected.dsPhong &&
@@ -356,6 +368,7 @@ function FrmTimKiemHoaDon() {
           setHoaDonSelected={setHoaDonSelected}
           formatDate={formatDate}
           totalHour={totalHour}
+          totalDate={totalDate}
           totalRoomPrice={totalRoomPrice}
           totalServicePrice={totalServicePrice}
           totalRoomServicePrice={totalRoomServicePrice}

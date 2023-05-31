@@ -1,6 +1,15 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Button, CloseButton, Table } from "react-bootstrap";
+import {
+  Button,
+  CloseButton,
+  Col,
+  Container,
+  FloatingLabel,
+  Form,
+  Row,
+  Table,
+} from "react-bootstrap";
 import styled from "styled-components";
 import { GrRadial, GrRadialSelected } from "react-icons/gr";
 import { getRoomsOrderRoute } from "../../../utils/APIRoutes";
@@ -16,6 +25,10 @@ function Rooms({
 }) {
   const [rooms, setRooms] = useState([]);
   const [roomsSelected, setRoomsSelected] = useState([]);
+  const [dsTang, setDsTang] = useState([]);
+  const [tangSearch, setTangSearch] = useState(undefined);
+  const [dsLoaiPhong, setDsLoaiPhong] = useState([]);
+  const [loaiPhongSearch, setLoaiPhongSearch] = useState(undefined);
 
   useEffect(() => {
     loadRoomData();
@@ -29,15 +42,55 @@ function Rooms({
         "Content-Type": "application/json;charset=UTF-8",
       },
     };
+    let ngayNhanPhong =
+      (bookingInfo.ngayNhanPhong && bookingInfo.ngayNhanPhong.toDate()) ||
+      new Date();
+    let ngayTraPhong =
+      (bookingInfo.ngayTraPhong && bookingInfo.ngayTraPhong.toDate()) ||
+      new Date();
+    ngayNhanPhong.setHours(0);
+    ngayNhanPhong.setMinutes(0);
+    ngayNhanPhong.setSeconds(0);
+    ngayNhanPhong.setMilliseconds(0);
+
+    ngayTraPhong.setHours(0);
+    ngayTraPhong.setMinutes(0);
+    ngayTraPhong.setSeconds(0);
+    ngayTraPhong.setMilliseconds(0);
+
     const { data } = await axios.post(
       `${getRoomsOrderRoute}`,
       {
-        ngayNhanPhong: bookingInfo.ngayNhanPhong || new Date(),
-        ngayTraPhong: bookingInfo.ngayTraPhong || new Date(),
+        ngayNhanPhong: ngayNhanPhong,
+        ngayTraPhong: ngayTraPhong,
       },
       config
     );
     // console.log(data);
+    if (data && data.length && data.length > 0) {
+      let dsTangTemp = [];
+      let dsLoaiPhongTemp = [];
+
+      for (let i = 0; i < data.length; i++) {
+        if (dsLoaiPhongTemp && dsLoaiPhongTemp.length === 0) {
+          dsLoaiPhongTemp = [data[i].tenLoaiPhong];
+        } else {
+          if (!dsLoaiPhongTemp.includes(data[i].tenLoaiPhong)) {
+            dsLoaiPhongTemp = [...dsLoaiPhongTemp, data[i].tenLoaiPhong];
+          }
+        }
+
+        if (dsTangTemp && dsTangTemp.length === 0) {
+          dsTangTemp = [data[i].tenTang];
+        } else {
+          if (!dsTangTemp.includes(data[i].tenTang)) {
+            dsTangTemp = [...dsTangTemp, data[i].tenTang];
+          }
+        }
+      }
+      setDsTang(dsTangTemp);
+      setDsLoaiPhong(dsLoaiPhongTemp);
+    }
     setRooms(data);
   };
   const isSelected = (room) => {
@@ -62,9 +115,22 @@ function Rooms({
     }
     setRoomsSelected([...temp, room]);
   };
+  const onHandleSelectSearch = (type, e) => {
+    if (type === "loaiPhong") {
+      if (e.target.value !== "Không chọn") setLoaiPhongSearch(e.target.value);
+      else {
+        setLoaiPhongSearch(undefined);
+      }
+    } else {
+      if (e.target.value !== "Không chọn") setTangSearch(e.target.value);
+      else {
+        setTangSearch(undefined);
+      }
+    }
+  };
   // console.log("roomChoosen", roomChoosen);
   // console.log(roomsSelected);
-
+  // console.log(dsTang);
   return (
     <StyledContainer>
       <div className="container-styled">
@@ -72,7 +138,99 @@ function Rooms({
           <h2 className="header-title">Chọn phòng</h2>
           <CloseButton onClick={() => setShowRooms(undefined)} />
         </div>
-        <div className="filter-btn"></div>
+        <div className="filter-btn">
+          <Container fluid>
+            <Row>
+              {/* <Col>Tìm kiếm: </Col> */}
+              <Col>
+                <FloatingLabel
+                  controlId="floatingInput"
+                  label="Tầng"
+                  className="mb-3"
+                >
+                  <Form.Select
+                    aria-label="Default select example"
+                    onChange={(e) => onHandleSelectSearch("tang", e)}
+                  >
+                    <option
+                      value={undefined}
+                      // key={index}
+                      // selected={
+                      //   phongMoi.maTang && phongMoi.maTang == tang.maTang
+                      // }
+                    >
+                      Không chọn
+                    </option>
+                    {dsTang &&
+                      dsTang.length !== 0 &&
+                      dsTang.map((tang, index) => {
+                        return (
+                          <option
+                            value={`${tang}`}
+                            key={index}
+                            // selected={
+                            //   phongMoi.maTang && phongMoi.maTang == tang.maTang
+                            // }
+                          >
+                            {tang}
+                          </option>
+                        );
+                      })}
+                  </Form.Select>
+                </FloatingLabel>
+              </Col>
+              <Col>
+                <FloatingLabel
+                  controlId="floatingInput"
+                  label="Loại phòng"
+                  className="mb-3"
+                >
+                  <Form.Select
+                    aria-label="Default select example"
+                    onChange={(e) => onHandleSelectSearch("loaiPhong", e)}
+                  >
+                    <option
+                      value={undefined}
+                      // key={index}
+                      // selected={
+                      //   phongMoi.maTang && phongMoi.maTang == tang.maTang
+                      // }
+                    >
+                      Không chọn
+                    </option>
+                    {dsLoaiPhong &&
+                      dsLoaiPhong.length !== 0 &&
+                      dsLoaiPhong.map((loaiPhong, index) => {
+                        return (
+                          <option
+                            value={`${loaiPhong}`}
+                            key={index}
+                            // selected={
+                            //   phongMoi.maTang && phongMoi.maTang == tang.maTang
+                            // }
+                          >
+                            {loaiPhong}
+                          </option>
+                        );
+                      })}
+                  </Form.Select>
+                </FloatingLabel>
+              </Col>
+              <Col>
+                {/* <Button
+                  variant="success"
+                  type="submit"
+                  // onClick={() => {
+                  //   setRoomChoosen([...roomsSelected]);
+                  //   setShowRooms(undefined);
+                  // }}
+                >
+                  Tìm
+                </Button> */}
+              </Col>
+            </Row>
+          </Container>
+        </div>
         <div className="table-container">
           <Table striped hover>
             <thead>
@@ -84,7 +242,7 @@ function Rooms({
                 <th>Số giường</th>
                 <th>Sức chứa</th>
                 <th>Tầng</th>
-                <th>Giá (1 đêm)</th>
+                <th>Giá (1 ngày)</th>
                 <th></th>
               </tr>
             </thead>
@@ -93,37 +251,54 @@ function Rooms({
                 rooms !== [] &&
                 rooms.map((room, index) => {
                   // console.log(isSelected(room));
-                  return (
-                    <tr
-                      key={index}
-                      className={`${isSelected(room) ? "row-selected" : ""}`}
-                      s
-                      onClick={() => onHandleSelected(room)}
-                    >
-                      <td>
-                        {isSelected(room) ? <GrRadialSelected /> : <GrRadial />}
-                      </td>
-                      <td>{room.maPhong}</td>
-                      {/* <td
+                  let booleanTang = true;
+                  let booleanLP = true;
+                  if (tangSearch && tangSearch !== room.tenTang) {
+                    booleanTang = false;
+                  }
+                  if (
+                    loaiPhongSearch &&
+                    loaiPhongSearch !== room.tenLoaiPhong
+                  ) {
+                    booleanLP = false;
+                  }
+
+                  if (booleanTang && booleanLP)
+                    return (
+                      <tr
+                        key={index}
+                        className={`${isSelected(room) ? "row-selected" : ""}`}
+                        s
+                        onClick={() => onHandleSelected(room)}
+                      >
+                        <td>
+                          {isSelected(room) ? (
+                            <GrRadialSelected />
+                          ) : (
+                            <GrRadial />
+                          )}
+                        </td>
+                        <td>{room.maPhong}</td>
+                        {/* <td
                         className={`${
                           room.trangThaiPhong ? "text-green" : "text-red"
                         }`}
                       >
                         {room.trangThaiPhong ? "Sẵn sàng" : "Không sẵn sàng"}
                       </td> */}
-                      <td>{room.tenLoaiPhong}</td>
-                      <td>{room.soGiuong}</td>
-                      <td>{room.sucChua}</td>
-                      <td>{room.tenTang}</td>
-                      <td>{room.giaPhong.toLocaleString()}</td>
-                      <td
-                        style={{ cursor: "pointer", position: "relative" }}
-                        onClick={() => setShowDetail(room)}
-                      >
-                        Xem chi tiết
-                      </td>
-                    </tr>
-                  );
+                        <td>{room.tenLoaiPhong}</td>
+                        <td>{room.soGiuong}</td>
+                        <td>{room.sucChua}</td>
+                        <td>{room.tenTang}</td>
+                        <td>{room.giaPhong.toLocaleString()}</td>
+                        <td
+                          style={{ cursor: "pointer", position: "relative" }}
+                          onClick={() => setShowDetail(room)}
+                        >
+                          Xem chi tiết
+                        </td>
+                      </tr>
+                    );
                 })}
             </tbody>
           </Table>

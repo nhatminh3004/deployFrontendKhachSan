@@ -29,7 +29,7 @@ function RoomDetail({ room, setShowDetail }) {
             })}
           </Carousel>
         </div>
-        <div className="cost">{room.giaPhong.toLocaleString()} VND / Giờ</div>
+        <div className="cost">{room.giaPhong.toLocaleString()} VND / Ngày</div>
         <div className="detail-info">
           <div className="common-info">
             <Card>

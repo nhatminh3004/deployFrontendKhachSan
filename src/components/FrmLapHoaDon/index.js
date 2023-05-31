@@ -18,6 +18,7 @@ import {
 } from "../../utils/APIRoutes";
 import FrmXacNhanHoaDon from "../FrmXacNhanHoaDon";
 import FrmXacNhanHoaDonMOMO from "../FrmXacNhanHoaDon/FrmXacNhanHoaDonMOMO";
+import { diff_dates } from "../../utils/functions";
 
 function FrmLapHoaDon() {
   const [toast, setToast] = useState(null);
@@ -28,6 +29,7 @@ function FrmLapHoaDon() {
   const [showConfirmBill, setShowConfirmBill] = useState(false);
   const [showConfirmBill_MOMO, setShowConfirmBill_MOMO] = useState(false);
   const [totalHour, setTotalHour] = useState(0);
+  const [totalDate, setTotalDate] = useState(0);
   const [totalRoomPrice, setTotalRoomPrice] = useState(0);
   const [totalRoomServicePrice, setTotalRoomServicePrice] = useState([]);
   const [totalServicePrice, setTotalServicePrice] = useState(0);
@@ -60,7 +62,7 @@ function FrmLapHoaDon() {
     const priceObject = {
       price: totalPrice,
     };
-    console.log("trong functionGETMOMOO:", priceObject);
+    // console.log("trong functionGETMOMOO:", priceObject);
     const { data } = await axios.post(
       "https://nhatminh3004-momo.onrender.com/momo",
       priceObject,
@@ -70,7 +72,7 @@ function FrmLapHoaDon() {
         },
       }
     );
-    console.log("data response functionGETMOMOO:", data);
+    // console.log("data response functionGETMOMOO:", data);
     return data;
   };
   useEffect(() => {
@@ -86,7 +88,7 @@ function FrmLapHoaDon() {
             },
           }
         );
-        console.log("Kết quả Mảng Thanh Toán MOMO", data);
+        // console.log("Kết quả Mảng Thanh Toán MOMO", data);
         if (data.length > 0) {
           setKetQuaThanhToan(data);
           // setIsDisableXacNhanThanhToanMOMO(false);
@@ -106,7 +108,7 @@ function FrmLapHoaDon() {
         // console.log('result:', result);
         setgenrateQR(result);
       } else {
-        console.log("NOT FOUND QR MOMO");
+        // console.log("NOT FOUND QR MOMO");
       }
     };
     fetchAPI();
@@ -120,14 +122,55 @@ function FrmLapHoaDon() {
     }
     let totalHours = diff_hours(ngayNhan, ngayTra);
     setTotalHour(totalHours);
+    ngayNhan.setHours(0);
+    ngayNhan.setMinutes(0);
+    ngayNhan.setSeconds(0);
+    ngayTra.setHours(0);
+    ngayTra.setMinutes(0);
+    ngayTra.setSeconds(0);
+    // ngayNhan.setDate(27);
+    let totalDates =
+      diff_dates(ngayNhan, ngayTra) === 0 ? 1 : diff_dates(ngayNhan, ngayTra);
+    setTotalDate(totalDates);
     if (
       hoaDonSelected &&
       hoaDonSelected.dsPhong &&
       hoaDonSelected.dsPhong.length > 0
     ) {
+      let currentDate = new Date();
+      // currentDate.setHours(19);
       for (let i = 0; i < hoaDonSelected.dsPhong.length; i++) {
-        price += hoaDonSelected.dsPhong[i].giaPhong * totalHours;
+        if (
+          currentDate.getDate() !== ngayNhan.getDate() ||
+          currentDate.getMonth() !== ngayNhan.getMonth() ||
+          currentDate.getFullYear() !== ngayNhan.getFullYear()
+        ) {
+          if (currentDate.getHours() > 11 && currentDate.getHours() <= 15) {
+            price +=
+              hoaDonSelected.dsPhong[i].giaPhong * totalDates +
+              hoaDonSelected.dsPhong[i].giaPhong * 0.3;
+          } else if (
+            currentDate.getHours() > 14 &&
+            currentDate.getHours() <= 18
+          ) {
+            price +=
+              hoaDonSelected.dsPhong[i].giaPhong * totalDates +
+              hoaDonSelected.dsPhong[i].giaPhong * 0.5;
+          } else if (currentDate.getHours() > 17) {
+            price +=
+              hoaDonSelected.dsPhong[i].giaPhong * totalDates +
+              hoaDonSelected.dsPhong[i].giaPhong;
+          } else {
+            price += hoaDonSelected.dsPhong[i].giaPhong * totalDates;
+          }
+        } else {
+          price += hoaDonSelected.dsPhong[i].giaPhong * totalDates;
+        }
       }
+      // currentDate.setHours(19);
+      // console.log(currentDate.getHours());
+
+      // console.log(price);
       setTotalRoomPrice(price);
     }
 
@@ -251,6 +294,9 @@ function FrmLapHoaDon() {
           ngayNhanPhong: hoaDonSelected.ngayNhanPhong,
           ngayTraPhong: new Date(),
           tienNhan: totalPrice,
+          tongTienDichVu: totalServicePrice,
+          tongTienPhong: totalRoomPrice,
+          tongTien: totalPrice,
           dsMaPhong,
           maPhieuDatPhong: hoaDonSelected.phieuDatPhong.maPhieuDatPhong,
           maKhachHang: hoaDonSelected.khachHang.maKhachHang,
@@ -301,6 +347,9 @@ function FrmLapHoaDon() {
           ngayNhanPhong: new Date(hoaDonSelected.ngayNhanPhong),
           ngayTraPhong: new Date(),
           tienNhan: hoaDonSelected.tienNhan,
+          tongTienDichVu: totalServicePrice,
+          tongTienPhong: totalRoomPrice,
+          tongTien: totalPrice,
           dsMaPhong,
           maPhieuDatPhong: hoaDonSelected.phieuDatPhong.maPhieuDatPhong,
           maKhachHang: hoaDonSelected.khachHang.maKhachHang,
@@ -386,7 +435,7 @@ function FrmLapHoaDon() {
     setShowButtonXacNhan(true);
     setShowThanhToanMOMO(false);
     window.open(generateQR[0].payUrl, "_blank");
-    console.log("QR MOMO:", generateQR);
+    // console.log("QR MOMO:", generateQR);
   };
 
   const handlXacNhanMOMO = () => {
@@ -537,7 +586,7 @@ function FrmLapHoaDon() {
                           <th>Phòng</th>
                           <th>Loại</th>
                           <th>Giá (1 giờ)</th>
-                          <th>Tổng giờ</th>
+                          <th>Số ngày</th>
                           <th>T tiền</th>
                         </tr>
                       </thead>
@@ -552,9 +601,9 @@ function FrmLapHoaDon() {
                                 <td>{room.maPhong}</td>
                                 <td>{room.tenLoaiPhong}</td>
                                 <td>{room.giaPhong.toLocaleString()}</td>
-                                <td>{totalHour}</td>
+                                <td>{totalDate}</td>
                                 <td>
-                                  {(totalHour * room.giaPhong).toLocaleString()}
+                                  {(totalDate * room.giaPhong).toLocaleString()}
                                 </td>
                               </tr>
                             );
@@ -823,7 +872,7 @@ function FrmLapHoaDon() {
                     - Ngày nhận phòng:{" "}
                     {hoaDonSelected &&
                       hoaDonSelected.ngayLap &&
-                      formatDate(new Date(hoaDonSelected.ngayNhanPhong))}
+                      formatOnlyDate(new Date(hoaDonSelected.ngayNhanPhong))}
                   </div>
                   <div className="date-info">
                     - Ngày trả phòng:{" "}
@@ -870,7 +919,11 @@ function FrmLapHoaDon() {
             <div className="btn-function">
               {/* Thanh toán momo */}
               {showThanhToanMOMO && generateQR && (
-                <Button style={{backgroundColor:'#D82D8B'}} variant="success" onClick={() => handleQRMOMO()}>
+                <Button
+                  style={{ backgroundColor: "#D82D8B" }}
+                  variant="success"
+                  onClick={() => handleQRMOMO()}
+                >
                   Thanh toán bằng MOMO
                 </Button>
               )}
@@ -910,6 +963,7 @@ function FrmLapHoaDon() {
           hoaDonSelected={hoaDonSelected}
           totalPrice={totalPrice}
           totalHour={totalHour}
+          totalDate={totalDate}
           totalRoomPrice={totalRoomPrice}
           totalServicePrice={totalServicePrice}
           totalRoomServicePrice={totalRoomServicePrice}
@@ -919,6 +973,7 @@ function FrmLapHoaDon() {
           setHoaDonSelected={setHoaDonSelected}
           onHandleCancelPrint={onHandleCancelPrint}
           formatDate={formatDate}
+          formatOnlyDate={formatOnlyDate}
         />
       )}
       {/* MOMO */}
@@ -928,6 +983,7 @@ function FrmLapHoaDon() {
           hoaDonSelected={hoaDonSelected}
           totalPrice={totalPrice}
           totalHour={totalHour}
+          totalDate={totalDate}
           totalRoomServicePrice={totalRoomServicePrice}
           totalRoomPrice={totalRoomPrice}
           totalServicePrice={totalServicePrice}
@@ -937,6 +993,7 @@ function FrmLapHoaDon() {
           setHoaDonSelected={setHoaDonSelected}
           onHandleCancelPrint={onHandleCancelPrint}
           formatDate={formatDate}
+          formatOnlyDate={formatOnlyDate}
         />
       )}
       {toast && (

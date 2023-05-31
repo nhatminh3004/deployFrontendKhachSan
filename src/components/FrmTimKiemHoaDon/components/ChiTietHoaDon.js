@@ -12,12 +12,17 @@ function ChiTietHoaDon({
   setHoaDonSelected,
   totalPrice,
   totalHour,
+  totalDate,
   totalRoomPrice,
   totalServicePrice,
   formatDate,
   totalRoomServicePrice,
 }) {
   // console.log(hoaDonSelected);
+  // console.log(totalHour);
+  // console.log(totalPrice);
+  // console.log(totalServicePrice);
+  // console.log(totalRoomPrice);
   const [nhanVien, setNhanVien] = useState();
   const handlePrint = () => {
     window.print();
@@ -120,8 +125,8 @@ function ChiTietHoaDon({
                       <tr>
                         <th>Phòng</th>
                         <th>Loại</th>
-                        <th>Giá (1 giờ)</th>
-                        <th>Tổng giờ</th>
+                        <th>Giá (1 ngày)</th>
+                        <th>Số ngày</th>
                         <th>T tiền</th>
                       </tr>
                     </thead>
@@ -136,9 +141,9 @@ function ChiTietHoaDon({
                               <td>{room.maPhong}</td>
                               <td>{room.tenLoaiPhong}</td>
                               <td>{room.giaPhong.toLocaleString()}</td>
-                              <td>{totalHour}</td>
+                              <td>{totalDate}</td>
                               <td>
-                                {(totalHour * room.giaPhong).toLocaleString()}
+                                {(totalDate * room.giaPhong).toLocaleString()}
                               </td>
                             </tr>
                           );
@@ -155,14 +160,28 @@ function ChiTietHoaDon({
                           colSpan={4}
                           style={{ fontWeight: "bold", textAlign: "center" }}
                         >
-                          Tồng thành tiền
+                          Tổng thành tiền
                         </td>
                         <td style={{ fontWeight: "bold" }}>
-                          {totalRoomPrice.toLocaleString()} VND
+                          {hoaDonSelected &&
+                            hoaDonSelected.tongTienPhong &&
+                            hoaDonSelected.tongTienPhong.toLocaleString()}{" "}
+                          VND
                         </td>
                       </tr>
                     </tbody>
                   </Table>
+                  <i>
+                    Ghi chú: Thời gian trả phòng: <b>trước 11h59</b>
+                    <br></br>- Khách trả phòng từ 12h00 đến 15h59: Tính mức phụ
+                    thu bằng 30% giá phòng 1 ngày.
+                    <br></br>- Khách trả phòng từ 16h00 đến 18h59: Tính mức phụ
+                    thu bằng 50% giá phòng 1 ngày.
+                    <br></br>- Khách trả phòng sau 19h00: Tính mức phụ thu bằng
+                    100% giá phòng 1 ngày.
+                    <br></br>- Khách nhận và trả phòng trong cùng ngày sẽ tính
+                    là 1 ngày bất kể giờ trả
+                  </i>
                 </div>
                 <h4>Chi tiết dịch vụ</h4>
                 <div className="phong-container">
@@ -222,7 +241,7 @@ function ChiTietHoaDon({
                                                 textAlign: "center",
                                               }}
                                             >
-                                              Tỗng tiền phòng{" "}
+                                              Tổng tiền phòng{" "}
                                               {roomPrice.maPhong}
                                             </td>
                                             <td>
@@ -271,7 +290,7 @@ function ChiTietHoaDon({
                                                 textAlign: "center",
                                               }}
                                             >
-                                              Tỗng tiền phòng{" "}
+                                              Tổng tiền phòng{" "}
                                               {roomPrice.maPhong}
                                             </td>
                                             <td>
@@ -308,7 +327,7 @@ function ChiTietHoaDon({
                                                   textAlign: "center",
                                                 }}
                                               >
-                                                Tỗng tiền phòng{" "}
+                                                Tổng tiền phòng{" "}
                                                 {roomPrice.maPhong}
                                               </td>
                                               <td>
@@ -339,7 +358,7 @@ function ChiTietHoaDon({
                                               textAlign: "center",
                                             }}
                                           >
-                                            Tỗng tiền phòng {roomPrice.maPhong}
+                                            Tổng tiền phòng {roomPrice.maPhong}
                                           </td>
                                           <td>
                                             {roomPrice.tongTien.toLocaleString()}
@@ -376,7 +395,7 @@ function ChiTietHoaDon({
                           colSpan={5}
                           style={{ fontWeight: "bold", textAlign: "center" }}
                         >
-                          Tồng thành tiền
+                          Tổng thành tiền
                         </td>
                         <td style={{ fontWeight: "bold" }}>
                           {totalServicePrice.toLocaleString()} VND
@@ -391,7 +410,10 @@ function ChiTietHoaDon({
                 >
                   <p style={{ fontWeight: "bold" }}>Tổng tiền</p>
                   <div className="total-price" style={{ fontWeight: "bold" }}>
-                    {totalPrice && totalPrice.toLocaleString()} VND
+                    {hoaDonSelected &&
+                      hoaDonSelected.tongTien &&
+                      hoaDonSelected.tongTien.toLocaleString()}{" "}
+                    VND
                   </div>
                 </div>
                 <div
@@ -413,7 +435,9 @@ function ChiTietHoaDon({
                   <p style={{ fontWeight: "bold" }}>Tiền thừa</p>
                   <div className="total-price" style={{ fontWeight: "bold" }}>
                     {totalPrice &&
-                      (hoaDonSelected.tienNhan - totalPrice).toLocaleString()}
+                      (
+                        hoaDonSelected.tienNhan - hoaDonSelected.tongTien
+                      ).toLocaleString()}
                     {/* {hoaDonSelected.tienNhan - totalPrice < 0
                         ? 0
                         : (
@@ -472,7 +496,7 @@ function ChiTietHoaDon({
         >
           <div
             style={{
-              overflowY: "auto",
+              overflowY: "visible",
             }}
           >
             <div
@@ -564,8 +588,8 @@ function ChiTietHoaDon({
                       <tr>
                         <th style={{ fontSize: "1.5rem" }}>Phòng</th>
                         <th style={{ fontSize: "1.5rem" }}>Loại</th>
-                        <th style={{ fontSize: "1.5rem" }}>Giá (1 giờ)</th>
-                        <th style={{ fontSize: "1.5rem" }}>Tổng giờ</th>
+                        <th style={{ fontSize: "1.5rem" }}>Giá (1 ngày)</th>
+                        <th style={{ fontSize: "1.5rem" }}>Số ngày</th>
                         <th style={{ fontSize: "1.5rem" }}>T tiền</th>
                       </tr>
                     </thead>
@@ -587,10 +611,10 @@ function ChiTietHoaDon({
                                 {room.giaPhong.toLocaleString()}
                               </td>
                               <td style={{ fontSize: "1.5rem" }}>
-                                {totalHour}
+                                {totalDate}
                               </td>
                               <td style={{ fontSize: "1.5rem" }}>
-                                {(totalHour * room.giaPhong).toLocaleString()}
+                                {(totalDate * room.giaPhong).toLocaleString()}
                               </td>
                             </tr>
                           );
@@ -611,14 +635,28 @@ function ChiTietHoaDon({
                             fontSize: "1.5rem",
                           }}
                         >
-                          Tồng thành tiền
+                          Tổng thành tiền
                         </td>
                         <td style={{ fontWeight: "bold", fontSize: "1.5rem" }}>
-                          {totalRoomPrice.toLocaleString()} VND
+                          {hoaDonSelected &&
+                            hoaDonSelected.tongTienPhong &&
+                            hoaDonSelected.tongTienPhong.toLocaleString()}{" "}
+                          VND
                         </td>
                       </tr>
                     </tbody>
                   </Table>
+                  <i style={{ fontSize: "1.5rem" }}>
+                    Ghi chú: Thời gian trả phòng: <b>trước 11h59</b>
+                    <br></br>- Khách trả phòng từ 12h00 đến 15h59: Tính mức phụ
+                    thu bằng 30% giá phòng 1 ngày.
+                    <br></br>- Khách trả phòng từ 16h00 đến 18h59: Tính mức phụ
+                    thu bằng 50% giá phòng 1 ngày.
+                    <br></br>- Khách trả phòng sau 19h00: Tính mức phụ thu bằng
+                    100% giá phòng 1 ngày.
+                    <br></br>- Khách nhận và trả phòng trong cùng ngày sẽ tính
+                    là 1 ngày bất kể giờ trả
+                  </i>
                 </div>
                 <h2>Chi tiết dịch vụ</h2>
                 <div style={{ overflowY: "auto" }}>
@@ -687,7 +725,7 @@ function ChiTietHoaDon({
                                                 fontSize: "1.5rem",
                                               }}
                                             >
-                                              Tỗng tiền phòng{" "}
+                                              Tổng tiền phòng{" "}
                                               {roomPrice.maPhong}
                                             </td>
                                             <td style={{ fontSize: "1.5rem" }}>
@@ -747,7 +785,7 @@ function ChiTietHoaDon({
                                                 fontSize: "1.5rem",
                                               }}
                                             >
-                                              Tỗng tiền phòng{" "}
+                                              Tổng tiền phòng{" "}
                                               {roomPrice.maPhong}
                                             </td>
                                             <td style={{ fontSize: "1.5rem" }}>
@@ -790,7 +828,7 @@ function ChiTietHoaDon({
                                                 fontSize: "1.5rem",
                                               }}
                                             >
-                                              Tỗng tiền phòng{" "}
+                                              Tổng tiền phòng{" "}
                                               {roomPrice.maPhong}
                                             </td>
                                             <td style={{ fontSize: "1.5rem" }}>
@@ -821,7 +859,7 @@ function ChiTietHoaDon({
                                               fontSize: "1.5rem",
                                             }}
                                           >
-                                            Tỗng tiền phòng {roomPrice.maPhong}
+                                            Tổng tiền phòng {roomPrice.maPhong}
                                           </td>
                                           <td style={{ fontSize: "1.5rem" }}>
                                             {roomPrice.tongTien.toLocaleString()}
@@ -875,7 +913,7 @@ function ChiTietHoaDon({
                             fontSize: "1.5rem",
                           }}
                         >
-                          Tồng thành tiền
+                          Tổng thành tiền
                         </td>
                         <td style={{ fontWeight: "bold", fontSize: "1.5rem" }}>
                           {totalServicePrice.toLocaleString()} VND
@@ -895,7 +933,10 @@ function ChiTietHoaDon({
                     className="total-price"
                     style={{ fontWeight: "bold", fontSize: "1.5rem" }}
                   >
-                    {totalPrice && totalPrice.toLocaleString()} VND
+                    {hoaDonSelected &&
+                      hoaDonSelected.tongTien &&
+                      hoaDonSelected.tongTien.toLocaleString()}{" "}
+                    VND
                   </div>
                 </div>
                 <div
@@ -927,7 +968,9 @@ function ChiTietHoaDon({
                     style={{ fontWeight: "bold", fontSize: "1.5rem" }}
                   >
                     {totalPrice &&
-                      (hoaDonSelected.tienNhan - totalPrice).toLocaleString()}
+                      (
+                        hoaDonSelected.tienNhan - hoaDonSelected.tongTien
+                      ).toLocaleString()}
                     {/* {hoaDonSelected.tienNhan - totalPrice < 0
                         ? 0
                         : (

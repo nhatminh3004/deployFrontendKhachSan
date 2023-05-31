@@ -21,6 +21,7 @@ import { Bar, BarChart, CartesianGrid, Legend, XAxis, YAxis, Tooltip, Responsive
 import PopupPrintThongKeSoLanDatPhong from './PopupPrintThongKeSoLanDatPhong';
 import { Empty } from 'antd';
 import PopupPrintDoanhThuTheoTungPhong from './PopupPrintDoanhThuTheoTungPhong';
+import { diff_dates } from '../../utils/functions';
 
 function FrmThongKePhong() {
     let ngayHienTai = new Date();
@@ -160,10 +161,41 @@ function FrmThongKePhong() {
                     let giaPhong = phongofHoaDon.giaPhong;
                     let ngayNhan = new Date(hoadon.ngayNhanPhong)
                     let ngayTra = new Date(hoadon.ngayTraPhong);
-                    let totalHour = diff_hours(ngayNhan, ngayTra)
-                    let tongTien = giaPhong * totalHour;
-                    price = Number(price) + Number(tongTien)
-                    // price = price + 2;
+                    ngayNhan.setHours(0);
+                    ngayNhan.setMinutes(0);
+                    ngayNhan.setSeconds(0);
+                    ngayTra.setHours(0);
+                    ngayTra.setMinutes(0);
+                    ngayTra.setSeconds(0);
+                    let totalDates =
+                        diff_dates(ngayNhan, ngayTra) === 0 ? 1 : diff_dates(ngayNhan, ngayTra);
+                    // let tongTien = giaPhong * totalHour;
+                    if (
+                        ngayTra.getDate() !== ngayNhan.getDate() ||
+                        ngayTra.getMonth() !== ngayNhan.getMonth() ||
+                        ngayTra.getFullYear() !== ngayNhan.getFullYear()
+                    ) {
+                        if (
+                            new Date(hoadon.ngayTraPhong).getHours() > 11 &&
+                            new Date(hoadon.ngayTraPhong).getHours() <= 15
+                        ) {
+                            price += giaPhong * totalDates + giaPhong * 0.3;
+                        } else if (
+                            new Date(hoadon.ngayTraPhong).getHours() > 14 &&
+                            new Date(hoadon.ngayTraPhong).getHours() <= 18
+                        ) {
+                            price += giaPhong * totalDates + giaPhong * 0.5;
+                        } else if (new Date(hoadon.ngayTraPhong).getHours() > 17) {
+                            price += giaPhong * totalDates + giaPhong;
+                        } else {
+                            price += giaPhong * totalDates;
+                        }
+                    } else {
+                        price += giaPhong * totalDates;
+                    }
+
+
+
                 }
             })
         })
@@ -330,7 +362,7 @@ function FrmThongKePhong() {
                                         {data.tenPhong}
                                     </td>
                                     <td>
-                                        {`${data.giaPhong.toLocaleString()} VND/giờ`}
+                                        {`${data.giaPhong.toLocaleString()} VND/ngày`}
                                     </td>
                                     <td>
                                         {data.tenTang}
@@ -363,7 +395,7 @@ function FrmThongKePhong() {
                             <YAxis allowDecimals={false} label={{ value: 'Số lần đặt phòng', angle: -90, position: 'insideLeft' }} />
                             <Tooltip />
                             <Legend />
-                            <Bar dataKey="số_lần_đặt_phòng" fill="#f45c43" />
+                            <Bar dataKey="số_lần_đặt_phòng" fill="#f45c43" name='Số lần đặt phòng' />
                         </BarChart>
                     </ResponsiveContainer>
                 </Stack>
@@ -388,7 +420,7 @@ function FrmThongKePhong() {
                             <YAxis allowDecimals={false} label={{ value: 'Tổng tiền', angle: -90, position: 'insideLeft' }} />
                             <Tooltip />
                             <Legend />
-                            <Bar dataKey="tổng_tiền" fill="#f45c43" />
+                            <Bar dataKey="tổng_tiền" fill="#f45c43" name='Tổng tiền phòng' />
                         </BarChart>
                     </ResponsiveContainer>
                 </Stack>
@@ -419,7 +451,7 @@ function FrmThongKePhong() {
                                         {phong.tenPhong}
                                     </td>
                                     <td>
-                                        {`${phong.giaPhong.toLocaleString()} VND/giờ`}
+                                        {`${phong.giaPhong.toLocaleString()} VND/ngày`}
                                     </td>
                                     <td>
                                         {phong.tenTang}

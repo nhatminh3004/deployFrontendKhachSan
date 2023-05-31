@@ -13,6 +13,7 @@ function FrmXacNhanHoaDon({
   totalPrice,
   totalRoomServicePrice,
   totalHour,
+  totalDate,
   totalRoomPrice,
   totalServicePrice,
   isPrint,
@@ -21,6 +22,7 @@ function FrmXacNhanHoaDon({
   setHoaDonSelected,
   onHandleCancelPrint,
   formatDate,
+  formatOnlyDate,
 }) {
   // console.log(hoaDonSelected);
   const [nhanVien, setNhanVien] = useState();
@@ -80,7 +82,7 @@ function FrmXacNhanHoaDon({
               <br></br>- Ngày nhận phòng:{" "}
               {hoaDonSelected &&
                 hoaDonSelected.ngayLap &&
-                formatDate(new Date(hoaDonSelected.ngayNhanPhong))}
+                formatOnlyDate(new Date(hoaDonSelected.ngayNhanPhong))}
               <br></br>- Ngày trả phòng:{" "}
               {hoaDonSelected &&
                 hoaDonSelected.ngayLap &&
@@ -124,8 +126,8 @@ function FrmXacNhanHoaDon({
                       <tr>
                         <th>Phòng</th>
                         <th>Loại</th>
-                        <th>Giá (1 giờ)</th>
-                        <th>Tổng giờ</th>
+                        <th>Giá (1 ngày)</th>
+                        <th>Số ngày</th>
                         <th>T tiền</th>
                       </tr>
                     </thead>
@@ -140,9 +142,9 @@ function FrmXacNhanHoaDon({
                               <td>{room.maPhong}</td>
                               <td>{room.tenLoaiPhong}</td>
                               <td>{room.giaPhong.toLocaleString()}</td>
-                              <td>{totalHour}</td>
+                              <td>{totalDate}</td>
                               <td>
-                                {(totalHour * room.giaPhong).toLocaleString()}
+                                {(totalDate * room.giaPhong).toLocaleString()}
                               </td>
                             </tr>
                           );
@@ -159,7 +161,7 @@ function FrmXacNhanHoaDon({
                           colSpan={4}
                           style={{ fontWeight: "bold", textAlign: "center" }}
                         >
-                          Tồng thành tiền
+                          Tổng thành tiền
                         </td>
                         <td style={{ fontWeight: "bold" }}>
                           {totalRoomPrice.toLocaleString()} VND
@@ -167,6 +169,17 @@ function FrmXacNhanHoaDon({
                       </tr>
                     </tbody>
                   </Table>
+                  <i>
+                    Ghi chú: Thời gian trả phòng: <b>trước 11h59</b>
+                    <br></br>- Khách trả phòng từ 12h00 đến 15h59: Tính mức phụ
+                    thu bằng 30% giá phòng 1 ngày.
+                    <br></br>- Khách trả phòng từ 16h00 đến 18h59: Tính mức phụ
+                    thu bằng 50% giá phòng 1 ngày.
+                    <br></br>- Khách trả phòng sau 19h00: Tính mức phụ thu bằng
+                    100% giá phòng 1 ngày.
+                    <br></br>- Khách nhận và trả phòng trong cùng ngày sẽ tính
+                    là 1 ngày bất kể giờ trả
+                  </i>
                 </div>
                 <h4>Chi tiết dịch vụ</h4>
                 <div className="phong-container">
@@ -226,7 +239,7 @@ function FrmXacNhanHoaDon({
                                                 textAlign: "center",
                                               }}
                                             >
-                                              Tỗng tiền phòng{" "}
+                                              Tổng tiền phòng{" "}
                                               {roomPrice.maPhong}
                                             </td>
                                             <td>
@@ -275,7 +288,7 @@ function FrmXacNhanHoaDon({
                                                 textAlign: "center",
                                               }}
                                             >
-                                              Tỗng tiền phòng{" "}
+                                              Tổng tiền phòng{" "}
                                               {roomPrice.maPhong}
                                             </td>
                                             <td>
@@ -312,7 +325,7 @@ function FrmXacNhanHoaDon({
                                                   textAlign: "center",
                                                 }}
                                               >
-                                                Tỗng tiền phòng{" "}
+                                                Tổng tiền phòng{" "}
                                                 {roomPrice.maPhong}
                                               </td>
                                               <td>
@@ -343,7 +356,7 @@ function FrmXacNhanHoaDon({
                                               textAlign: "center",
                                             }}
                                           >
-                                            Tỗng tiền phòng {roomPrice.maPhong}
+                                            Tổng tiền phòng {roomPrice.maPhong}
                                           </td>
                                           <td>
                                             {roomPrice.tongTien.toLocaleString()}
@@ -380,7 +393,7 @@ function FrmXacNhanHoaDon({
                           colSpan={5}
                           style={{ fontWeight: "bold", textAlign: "center" }}
                         >
-                          Tồng thành tiền
+                          Tổng thành tiền
                         </td>
                         <td style={{ fontWeight: "bold" }}>
                           {totalServicePrice.toLocaleString()} VND
@@ -489,7 +502,7 @@ function FrmXacNhanHoaDon({
         >
           <div
             style={{
-              overflowY: "auto",
+              overflowY: "visible",
             }}
           >
             <div
@@ -581,8 +594,8 @@ function FrmXacNhanHoaDon({
                       <tr>
                         <th style={{ fontSize: "1.5rem" }}>Phòng</th>
                         <th style={{ fontSize: "1.5rem" }}>Loại</th>
-                        <th style={{ fontSize: "1.5rem" }}>Giá (1 giờ)</th>
-                        <th style={{ fontSize: "1.5rem" }}>Tổng giờ</th>
+                        <th style={{ fontSize: "1.5rem" }}>Giá (1 ngày)</th>
+                        <th style={{ fontSize: "1.5rem" }}>Số ngày</th>
                         <th style={{ fontSize: "1.5rem" }}>T tiền</th>
                       </tr>
                     </thead>
@@ -604,10 +617,10 @@ function FrmXacNhanHoaDon({
                                 {room.giaPhong.toLocaleString()}
                               </td>
                               <td style={{ fontSize: "1.5rem" }}>
-                                {totalHour}
+                                {totalDate}
                               </td>
                               <td style={{ fontSize: "1.5rem" }}>
-                                {(totalHour * room.giaPhong).toLocaleString()}
+                                {(totalDate * room.giaPhong).toLocaleString()}
                               </td>
                             </tr>
                           );
@@ -628,7 +641,7 @@ function FrmXacNhanHoaDon({
                             fontSize: "1.5rem",
                           }}
                         >
-                          Tồng thành tiền
+                          Tổng thành tiền
                         </td>
                         <td style={{ fontWeight: "bold", fontSize: "1.5rem" }}>
                           {totalRoomPrice.toLocaleString()} VND
@@ -636,6 +649,17 @@ function FrmXacNhanHoaDon({
                       </tr>
                     </tbody>
                   </Table>
+                  <i style={{ fontSize: "1.5rem" }}>
+                    Ghi chú: Thời gian trả phòng: <b>trước 11h59</b>
+                    <br></br>- Khách trả phòng từ 12h00 đến 15h59: Tính mức phụ
+                    thu bằng 30% giá phòng 1 ngày.
+                    <br></br>- Khách trả phòng từ 16h00 đến 18h59: Tính mức phụ
+                    thu bằng 50% giá phòng 1 ngày.
+                    <br></br>- Khách trả phòng sau 19h00: Tính mức phụ thu bằng
+                    100% giá phòng 1 ngày.
+                    <br></br>- Khách nhận và trả phòng trong cùng ngày sẽ tính
+                    là 1 ngày bất kể giờ trả
+                  </i>
                 </div>
                 <h2>Chi tiết dịch vụ</h2>
                 <div style={{ overflowY: "auto" }}>
@@ -704,7 +728,7 @@ function FrmXacNhanHoaDon({
                                                 fontSize: "1.5rem",
                                               }}
                                             >
-                                              Tỗng tiền phòng{" "}
+                                              Tổng tiền phòng{" "}
                                               {roomPrice.maPhong}
                                             </td>
                                             <td style={{ fontSize: "1.5rem" }}>
@@ -764,7 +788,7 @@ function FrmXacNhanHoaDon({
                                                 fontSize: "1.5rem",
                                               }}
                                             >
-                                              Tỗng tiền phòng{" "}
+                                              Tổng tiền phòng{" "}
                                               {roomPrice.maPhong}
                                             </td>
                                             <td style={{ fontSize: "1.5rem" }}>
@@ -807,7 +831,7 @@ function FrmXacNhanHoaDon({
                                                 fontSize: "1.5rem",
                                               }}
                                             >
-                                              Tỗng tiền phòng{" "}
+                                              Tổng tiền phòng{" "}
                                               {roomPrice.maPhong}
                                             </td>
                                             <td style={{ fontSize: "1.5rem" }}>
@@ -838,7 +862,7 @@ function FrmXacNhanHoaDon({
                                               fontSize: "1.5rem",
                                             }}
                                           >
-                                            Tỗng tiền phòng {roomPrice.maPhong}
+                                            Tổng tiền phòng {roomPrice.maPhong}
                                           </td>
                                           <td style={{ fontSize: "1.5rem" }}>
                                             {roomPrice.tongTien.toLocaleString()}
@@ -892,7 +916,7 @@ function FrmXacNhanHoaDon({
                             fontSize: "1.5rem",
                           }}
                         >
-                          Tồng thành tiền
+                          Tổng thành tiền
                         </td>
                         <td style={{ fontWeight: "bold", fontSize: "1.5rem" }}>
                           {totalServicePrice.toLocaleString()} VND
