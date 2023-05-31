@@ -1,4 +1,4 @@
-export const host = "https://deploykhoaluankhachsan-production.up.railway.app";
+export const host = "http://localhost:8080";
 //Login
 export const loginRoute = `${host}/api/auth/authenticate`;
 //Change Password

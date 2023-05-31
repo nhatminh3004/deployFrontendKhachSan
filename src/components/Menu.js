@@ -226,10 +226,9 @@ function Menu({
                 {navSelected.room && (
                   <div className="sub-menu-container">
                     <button
-                      className={`btn-sub ${
-                        subNavSelected.subnav === "update-room" &&
+                      className={`btn-sub ${subNavSelected.subnav === "update-room" &&
                         "btn-sub-selected"
-                      }`}
+                        }`}
                       onClick={() =>
                         onHandleSelectedSubNav("update-room", "room")
                       }
@@ -238,10 +237,9 @@ function Menu({
                       <p className="btn-sub-title">Cập nhật</p>
                     </button>
                     <button
-                      className={`btn-sub ${
-                        subNavSelected.subnav === "search-room" &&
+                      className={`btn-sub ${subNavSelected.subnav === "search-room" &&
                         "btn-sub-selected"
-                      }`}
+                        }`}
                       onClick={() =>
                         onHandleSelectedSubNav("search-room", "room")
                       }
@@ -268,10 +266,9 @@ function Menu({
                 {navSelected.floor && (
                   <div className="sub-menu-container">
                     <button
-                      className={`btn-sub ${
-                        subNavSelected.subnav === "update-floor" &&
+                      className={`btn-sub ${subNavSelected.subnav === "update-floor" &&
                         "btn-sub-selected"
-                      }`}
+                        }`}
                       onClick={() =>
                         onHandleSelectedSubNav("update-floor", "floor")
                       }
@@ -281,10 +278,9 @@ function Menu({
                     </button>
                     {/* Tìm kiếm khách hàng */}
                     <button
-                      className={`btn-sub ${
-                        subNavSelected.subnav === "search-floor" &&
+                      className={`btn-sub ${subNavSelected.subnav === "search-floor" &&
                         "btn-sub-selected"
-                      }`}
+                        }`}
                       onClick={() =>
                         onHandleSelectedSubNav("search-floor", "floor")
                       }
@@ -312,10 +308,9 @@ function Menu({
                 {navSelected.guest && (
                   <div className="sub-menu-container">
                     <button
-                      className={`btn-sub ${
-                        subNavSelected.subnav === "update-guest" &&
+                      className={`btn-sub ${subNavSelected.subnav === "update-guest" &&
                         "btn-sub-selected"
-                      }`}
+                        }`}
                       onClick={() =>
                         onHandleSelectedSubNav("update-guest", "guest")
                       }
@@ -325,10 +320,9 @@ function Menu({
                     </button>
                     {/* Tìm kiếm khách hàng */}
                     <button
-                      className={`btn-sub ${
-                        subNavSelected.subnav === "search-guest" &&
+                      className={`btn-sub ${subNavSelected.subnav === "search-guest" &&
                         "btn-sub-selected"
-                      }`}
+                        }`}
                       onClick={() =>
                         onHandleSelectedSubNav("search-guest", "guest")
                       }
@@ -356,19 +350,17 @@ function Menu({
                 {navSelected.staff && (
                   <div className="sub-menu-container">
                     <button
-                      className={`btn-sub ${
-                        subNavSelected.subnav === "book" && "btn-sub-selected"
-                      }`}
+                      className={`btn-sub ${subNavSelected.subnav === "book" && "btn-sub-selected"
+                        }`}
                       onClick={() => onHandleSelectedSubNav("book", "staff")}
                     >
                       <CallEndOutlinedIcon />
                       <p className="btn-sub-title">Đặt phòng</p>
                     </button>
                     <button
-                      className={`btn-sub ${
-                        subNavSelected.subnav === "check-in" &&
+                      className={`btn-sub ${subNavSelected.subnav === "check-in" &&
                         "btn-sub-selected"
-                      }`}
+                        }`}
                       onClick={() =>
                         onHandleSelectedSubNav("check-in", "staff")
                       }
@@ -377,10 +369,9 @@ function Menu({
                       <p className="btn-sub-title">Nhận phòng</p>
                     </button>
                     <button
-                      className={`btn-sub ${
-                        subNavSelected.subnav === "add-bill" &&
+                      className={`btn-sub ${subNavSelected.subnav === "add-bill" &&
                         "btn-sub-selected"
-                      }`}
+                        }`}
                       onClick={() =>
                         onHandleSelectedSubNav("add-bill", "staff")
                       }
@@ -414,12 +405,11 @@ function Menu({
                     </button> */}
                     {nhanVien &&
                       nhanVien.taiKhoan.vaiTro.tenVaiTro ===
-                        "ROLE_MANAGEMENT" && (
+                      "ROLE_MANAGEMENT" && (
                         <button
-                          className={`btn-sub ${
-                            subNavSelected.subnav === "update-staff" &&
+                          className={`btn-sub ${subNavSelected.subnav === "update-staff" &&
                             "btn-sub-selected"
-                          }`}
+                            }`}
                           onClick={() =>
                             onHandleSelectedSubNav("update-staff", "staff")
                           }
@@ -430,12 +420,11 @@ function Menu({
                       )}
                     {nhanVien &&
                       nhanVien.taiKhoan.vaiTro.tenVaiTro ===
-                        "ROLE_MANAGEMENT" && (
+                      "ROLE_MANAGEMENT" && (
                         <button
-                          className={`btn-sub ${
-                            subNavSelected.subnav === "search-staff" &&
+                          className={`btn-sub ${subNavSelected.subnav === "search-staff" &&
                             "btn-sub-selected"
-                          }`}
+                            }`}
                           onClick={() =>
                             onHandleSelectedSubNav("search-staff", "staff")
                           }
@@ -493,10 +482,9 @@ function Menu({
                         </button>
                       )} */}
                     <button
-                      className={`btn-sub ${
-                        subNavSelected.subnav === "report-staff" &&
+                      className={`btn-sub ${subNavSelected.subnav === "report-staff" &&
                         "btn-sub-selected"
-                      }`}
+                        }`}
                       onClick={() =>
                         onHandleSelectedSubNav("report-staff", "staff")
                       }
@@ -520,10 +508,9 @@ function Menu({
                 {navSelected.bill && (
                   <div className="sub-menu-container">
                     <button
-                      className={`btn-sub ${
-                        subNavSelected.subnav === "search-bill" &&
+                      className={`btn-sub ${subNavSelected.subnav === "search-bill" &&
                         "btn-sub-selected"
-                      }`}
+                        }`}
                       onClick={() =>
                         onHandleSelectedSubNav("search-bill", "bill")
                       }
@@ -572,10 +559,9 @@ function Menu({
                  <p className="btn-sub-title">Loại dịch vụ</p>
                </button> */}
                     <button
-                      className={`btn-sub ${
-                        subNavSelected.subnav === "booking-service" &&
+                      className={`btn-sub ${subNavSelected.subnav === "booking-service" &&
                         "btn-sub-selected"
-                      }`}
+                        }`}
                       onClick={() =>
                         onHandleSelectedSubNav("booking-service", "service")
                       }
@@ -584,10 +570,9 @@ function Menu({
                       <p className="btn-sub-title">Đặt dịch vụ</p>
                     </button>
                     <button
-                      className={`btn-sub ${
-                        subNavSelected.subnav === "update-service" &&
+                      className={`btn-sub ${subNavSelected.subnav === "update-service" &&
                         "btn-sub-selected"
-                      }`}
+                        }`}
                       onClick={() =>
                         onHandleSelectedSubNav("update-service", "service")
                       }
@@ -597,10 +582,9 @@ function Menu({
                     </button>
                     {/* Search Dich Vu */}
                     <button
-                      className={`btn-sub ${
-                        subNavSelected.subnav === "search-service" &&
+                      className={`btn-sub ${subNavSelected.subnav === "search-service" &&
                         "btn-sub-selected"
-                      }`}
+                        }`}
                       onClick={() =>
                         onHandleSelectedSubNav("search-service", "service")
                       }
@@ -692,7 +676,7 @@ function Menu({
                 </div>
               )}
             </button> */}
-            {nhanVien.taiKhoan.daKichHoat && (
+            {/* {nhanVien.taiKhoan.daKichHoat && (
               <button
                 className={`btn ${navSelected.booking && "btn-selected"}`}
               >
@@ -735,7 +719,7 @@ function Menu({
                   </div>
                 )}
               </button>
-            )}
+            )} */}
           </div>
           <div
             style={{
@@ -791,18 +775,16 @@ function Menu({
                     }}
                   >
                     {nhanVien &&
-                      `${
-                        nhanVien.hoTen.split(" ")[
-                          nhanVien.hoTen.split(" ").length - 2
-                        ]
-                      } ${
-                        nhanVien.hoTen.split(" ")[
-                          nhanVien.hoTen.split(" ").length - 1
-                        ]
+                      `${nhanVien.hoTen.split(" ")[
+                      nhanVien.hoTen.split(" ").length - 2
+                      ]
+                      } ${nhanVien.hoTen.split(" ")[
+                      nhanVien.hoTen.split(" ").length - 1
+                      ]
                       } `}
                   </h6>
                   {nhanVien &&
-                  nhanVien.taiKhoan.vaiTro.tenVaiTro === "ROLE_MANAGEMENT" ? (
+                    nhanVien.taiKhoan.vaiTro.tenVaiTro === "ROLE_MANAGEMENT" ? (
                     <Chip
                       color="error"
                       size="small"
@@ -938,7 +920,7 @@ function Menu({
             <div className="site-description-item-profile-wrapper">
               <p className="site-description-item-profile-p-label">Chức vụ:</p>
               {nhanVien &&
-              nhanVien.taiKhoan.vaiTro.tenVaiTro === "ROLE_MANAGEMENT"
+                nhanVien.taiKhoan.vaiTro.tenVaiTro === "ROLE_MANAGEMENT"
                 ? "nhân viên quản lý"
                 : "nhân viên lễ tân"}
             </div>
@@ -998,7 +980,7 @@ function Menu({
                   onChange={(e) => handleOnChange(e)}
                   value={
                     objectDoiMatKhau.matKhauCu &&
-                    objectDoiMatKhau.matKhauCu.length != 0
+                      objectDoiMatKhau.matKhauCu.length != 0
                       ? objectDoiMatKhau.matKhauCu
                       : ""
                   }
@@ -1020,7 +1002,7 @@ function Menu({
                   name="matKhauMoi"
                   value={
                     objectDoiMatKhau.matKhauMoi &&
-                    objectDoiMatKhau.matKhauMoi.length != 0
+                      objectDoiMatKhau.matKhauMoi.length != 0
                       ? objectDoiMatKhau.matKhauMoi
                       : ""
                   }
