@@ -2451,7 +2451,7 @@ function FrmThongKeDoanhThu() {
               </thead>
               <tbody>
                 {dsHoaDonDaThanhToanDeThongKe &&
-                dsHoaDonDaThanhToanDeThongKe.length > 0 ? (
+                  dsHoaDonDaThanhToanDeThongKe.length > 0 ? (
                   dsHoaDonDaThanhToanDeThongKe.map((data) => (
                     <tr key={data.maHoaDon}>
                       <td>{data.maHoaDon}</td>
@@ -2477,15 +2477,15 @@ function FrmThongKeDoanhThu() {
                       <td>
                         {data.dsChiTietDichVuDto.length > 0
                           ? data.dsChiTietDichVuDto.map((dv, index) => {
-                              if (
-                                index ===
-                                data.dsChiTietDichVuDto.length - 1
-                              ) {
-                                return `${dv.soLuong} ${dv.tenDichVu}(${dv.tenLoaiDichVu})`;
-                              } else {
-                                return ` ${dv.soLuong} ${dv.tenDichVu}(${dv.tenLoaiDichVu}),`;
-                              }
-                            })
+                            if (
+                              index ===
+                              data.dsChiTietDichVuDto.length - 1
+                            ) {
+                              return `${dv.soLuong} ${dv.tenDichVu}(${dv.tenLoaiDichVu})`;
+                            } else {
+                              return ` ${dv.soLuong} ${dv.tenDichVu}(${dv.tenLoaiDichVu}),`;
+                            }
+                          })
                           : "Không có"}
                       </td>
                       <td>{`${data.tienNhan.toLocaleString()} VND`}</td>
@@ -2573,7 +2573,7 @@ function FrmThongKeDoanhThu() {
               </thead>
               <tbody>
                 {dsHoaDonDaThanhToanDeThongKeTheoThang &&
-                dsHoaDonDaThanhToanDeThongKeTheoThang.length > 0 ? (
+                  dsHoaDonDaThanhToanDeThongKeTheoThang.length > 0 ? (
                   dsHoaDonDaThanhToanDeThongKeTheoThang.map((data) => (
                     <tr key={data.maHoaDon}>
                       <td>{data.maHoaDon}</td>
@@ -2599,15 +2599,15 @@ function FrmThongKeDoanhThu() {
                       <td>
                         {data.dsChiTietDichVuDto.length > 0
                           ? data.dsChiTietDichVuDto.map((dv, index) => {
-                              if (
-                                index ===
-                                data.dsChiTietDichVuDto.length - 1
-                              ) {
-                                return `${dv.soLuong} ${dv.tenDichVu}(${dv.tenLoaiDichVu})`;
-                              } else {
-                                return ` ${dv.soLuong} ${dv.tenDichVu}(${dv.tenLoaiDichVu}),`;
-                              }
-                            })
+                            if (
+                              index ===
+                              data.dsChiTietDichVuDto.length - 1
+                            ) {
+                              return `${dv.soLuong} ${dv.tenDichVu}(${dv.tenLoaiDichVu})`;
+                            } else {
+                              return ` ${dv.soLuong} ${dv.tenDichVu}(${dv.tenLoaiDichVu}),`;
+                            }
+                          })
                           : "Không có"}
                       </td>
                       <td>{`${data.tienNhan.toLocaleString()} VND`}</td>
@@ -2702,7 +2702,7 @@ function FrmThongKeDoanhThu() {
                   name="Tổng tiền"
                 />
                 <Bar dataKey="tienPhong" barSize={10} fill="#5433ff" name="Tiền phòng" />
-                <Line type="monotone" dataKey="tienDichVu" stroke="#ffd200" name="Tiền dịch vụ"/>
+                <Line type="monotone" dataKey="tienDichVu" stroke="#ffd200" name="Tiền dịch vụ" />
               </ComposedChart>
             </ResponsiveContainer>
           </Stack>
